@@ -50,10 +50,8 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRE_DAYS: int = 7
 
-    # 微信开放平台 (Web 端扫码登录)
-    WECHAT_APP_ID: Optional[str] = None
-    WECHAT_APP_SECRET: Optional[str] = None
-    WECHAT_REDIRECT_URI: Optional[str] = None  # 回调地址
+    # 注册邀请码 (留空 = 开放注册; 多个用逗号分隔)
+    INVITE_CODES: Optional[str] = None
 
     # 阿里云 OSS
     ALIYUN_OSS_ACCESS_KEY_ID: Optional[str] = None

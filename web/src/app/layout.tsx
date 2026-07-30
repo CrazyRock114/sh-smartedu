@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
+import { NavBar } from '@/components/NavBar';
 
 export const metadata: Metadata = {
   title: '学迹 · 上海小学生学习辅助',
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body className="min-h-screen bg-gray-50 antialiased">
+        <NavBar />
         {children}
       </body>
     </html>
