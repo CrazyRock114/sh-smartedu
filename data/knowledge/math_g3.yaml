@@ -1,0 +1,886 @@
+# 三年级数学知识图谱初稿
+# 基于 2022 课标 + 人教版/沪教版三年级上册
+# 范围: 三年级上 (主要), 三年级下 (次要)
+# 阶段 1 起步 50-100 节点, 后续补充 4-6 年级
+# 视频链接为示例, 需在阶段 1 后期统一校对
+
+- code: MATH-G3-C01-K001
+  subject: math
+  grade: 3
+  chapter: 第一章·时、分、秒
+  name: 秒的认识
+  description: |
+    认识秒针, 知道 1 分 = 60 秒, 会读写秒。
+  importance: 3
+  difficulty: 2
+  prerequisites: []
+  successors:
+    - MATH-G3-C01-K002
+  related: []
+  video_urls: []
+  common_errors:
+    - 秒针和分针混淆
+    - 单位换算错误
+
+- code: MATH-G3-C01-K002
+  subject: math
+  grade: 3
+  chapter: 第一章·时、分、秒
+  name: 时间单位换算
+  description: |
+    时、分、秒之间的换算 (1 时=60 分, 1 分=60 秒)。
+    能进行简单的时间计算。
+  importance: 4
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C01-K001
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 进率搞错
+    - 计算时分秒相加忘记进位
+
+- code: MATH-G3-C01-K003
+  subject: math
+  grade: 3
+  chapter: 第一章·时、分、秒
+  name: 估算时间
+  description: |
+    能估算日常生活中的时间, 如做作业、看动画片等。
+  importance: 2
+  difficulty: 2
+  prerequisites:
+    - MATH-G3-C01-K001
+  successors: []
+  related: []
+  video_urls: []
+  common_errors: []
+
+- code: MATH-G3-C02-K001
+  subject: math
+  grade: 3
+  chapter: 第二章·万以内的加法和减法(一)
+  name: 三位数加三位数(不进位)
+  description: |
+    相同数位对齐, 从个位加起。
+  importance: 4
+  difficulty: 2
+  prerequisites:
+    - MATH-G2-C04-K001  # 二年级两位数加法
+  successors:
+    - MATH-G3-C02-K002
+    - MATH-G3-C02-K003
+  related: []
+  video_urls: []
+  common_errors:
+    - 数位没对齐
+    - 忘记写进位
+
+- code: MATH-G3-C02-K002
+  subject: math
+  grade: 3
+  chapter: 第二章·万以内的加法和减法(一)
+  name: 三位数加三位数(进位)
+  description: |
+    满十进一, 连续进位的处理。
+  importance: 5
+  difficulty: 4
+  prerequisites:
+    - MATH-G3-C02-K001
+  successors:
+    - MATH-G3-C02-K004
+  related: []
+  video_urls: []
+  common_errors:
+    - 忘记进位
+    - 进位后忘记加到下一位
+    - 连续进位漏
+
+- code: MATH-G3-C02-K003
+  subject: math
+  grade: 3
+  chapter: 第二章·万以内的加法和减法(一)
+  name: 三位数减三位数(不退位)
+  description: |
+    相同数位对齐, 从个位减起。
+  importance: 4
+  difficulty: 2
+  prerequisites:
+    - MATH-G3-C02-K001
+  successors:
+    - MATH-G3-C02-K004
+  related: []
+  video_urls: []
+  common_errors:
+    - 数位没对齐
+    - 减法顺序错
+
+- code: MATH-G3-C02-K004
+  subject: math
+  grade: 3
+  chapter: 第二章·万以内的加法和减法(一)
+  name: 三位数减三位数(退位)
+  description: |
+    不够减时从前一位借 1 当 10。
+  importance: 5
+  difficulty: 4
+  prerequisites:
+    - MATH-G3-C02-K002
+    - MATH-G3-C02-K003
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 忘记退位
+    - 退位后下一位忘记减 1
+    - 0 减几处理错 (如 1000-1)
+
+- code: MATH-G3-C02-K005
+  subject: math
+  grade: 3
+  chapter: 第二章·万以内的加法和减法(一)
+  name: 加减法的验算
+  description: |
+    用加法验算减法, 用减法验算加法, 或用交换加数位置验算。
+  importance: 3
+  difficulty: 2
+  prerequisites:
+    - MATH-G3-C02-K004
+  successors: []
+  related: []
+  video_urls: []
+  common_errors: []
+
+- code: MATH-G3-C03-K001
+  subject: math
+  grade: 3
+  chapter: 第三章·测量
+  name: 毫米、分米的认识
+  description: |
+    1 厘米 = 10 毫米, 1 分米 = 10 厘米。
+    实际物体的估测。
+  importance: 3
+  difficulty: 2
+  prerequisites: []
+  successors:
+    - MATH-G3-C03-K002
+  related: []
+  video_urls: []
+  common_errors:
+    - 单位混淆 (毫米/厘米/分米)
+
+- code: MATH-G3-C03-K002
+  subject: math
+  grade: 3
+  chapter: 第三章·测量
+  name: 千米的认识
+  description: |
+    1 千米 = 1000 米, 知道日常生活中千米的使用场景。
+  importance: 3
+  difficulty: 2
+  prerequisites: []
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 千米和米的进率搞错
+
+- code: MATH-G3-C03-K003
+  subject: math
+  grade: 3
+  chapter: 第三章·测量
+  name: 吨的认识
+  description: |
+    1 吨 = 1000 千克, 知道日常生活中吨的使用场景。
+  importance: 3
+  difficulty: 2
+  prerequisites: []
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 吨和千克的进率搞错
+
+- code: MATH-G3-C03-K004
+  subject: math
+  grade: 3
+  chapter: 第三章·测量
+  name: 长度单位换算
+  description: |
+    毫米、厘米、分米、米、千米之间的换算。
+  importance: 4
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C03-K001
+    - MATH-G3-C03-K002
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 进率搞错
+    - 单位不一致不换算
+
+- code: MATH-G3-C03-K005
+  subject: math
+  grade: 3
+  chapter: 第三章·测量
+  name: 质量单位换算
+  description: |
+    克、千克、吨之间的换算。
+  importance: 4
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C03-K003
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 进率搞错
+
+- code: MATH-G3-C04-K001
+  subject: math
+  grade: 3
+  chapter: 第四章·倍的认识
+  name: 倍的含义
+  description: |
+    理解"倍"的概念, 两个数量之间的倍数关系。
+  importance: 4
+  difficulty: 3
+  prerequisites: []
+  successors:
+    - MATH-G3-C04-K002
+  related: []
+  video_urls: []
+  common_errors:
+    - 把"多几"和"几倍"混淆
+
+- code: MATH-G3-C04-K002
+  subject: math
+  grade: 3
+  chapter: 第四章·倍的认识
+  name: 求一个数是另一个数的几倍
+  description: |
+    用除法求倍数: 大数 ÷ 小数 = 倍数。
+  importance: 4
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C04-K001
+  successors:
+    - MATH-G3-C04-K003
+  related: []
+  video_urls: []
+  common_errors:
+    - 算式顺序错 (用小数÷大数)
+
+- code: MATH-G3-C04-K003
+  subject: math
+  grade: 3
+  chapter: 第四章·倍的认识
+  name: 求一个数的几倍是多少
+  description: |
+    用乘法求: 这个数 × 倍数 = 几倍是多少。
+  importance: 4
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C04-K001
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 乘除混淆
+
+- code: MATH-G3-C05-K001
+  subject: math
+  grade: 3
+  chapter: 第五章·多位数乘一位数
+  name: 整十数乘一位数
+  description: |
+    如 20×3 = 60, 利用数的组成计算。
+  importance: 3
+  difficulty: 2
+  prerequisites:
+    - MATH-G2-C05-K001  # 二年级乘法
+  successors:
+    - MATH-G3-C05-K002
+  related: []
+  video_urls: []
+  common_errors: []
+
+- code: MATH-G3-C05-K002
+  subject: math
+  grade: 3
+  chapter: 第五章·多位数乘一位数
+  name: 两位数乘一位数(不进位)
+  description: |
+    相同数位对齐, 从个位乘起。
+  importance: 4
+  difficulty: 2
+  prerequisites:
+    - MATH-G3-C05-K001
+  successors:
+    - MATH-G3-C05-K003
+  related: []
+  video_urls: []
+  common_errors:
+    - 数位没对齐
+    - 漏乘某一位
+
+- code: MATH-G3-C05-K003
+  subject: math
+  grade: 3
+  chapter: 第五章·多位数乘一位数
+  name: 两位数乘一位数(进位)
+  description: |
+    每乘一位满十进一, 处理好进位。
+  importance: 5
+  difficulty: 4
+  prerequisites:
+    - MATH-G3-C05-K002
+  successors:
+    - MATH-G3-C05-K004
+  related: []
+  video_urls: []
+  common_errors:
+    - 忘记进位
+    - 进位后忘记加到下一位
+
+- code: MATH-G3-C05-K004
+  subject: math
+  grade: 3
+  chapter: 第五章·多位数乘一位数
+  name: 三位数乘一位数
+  description: |
+    三位数乘一位数, 理解每一步的意义。
+  importance: 5
+  difficulty: 4
+  prerequisites:
+    - MATH-G3-C05-K003
+  successors:
+    - MATH-G3-C05-K005
+  related: []
+  video_urls: []
+  common_errors:
+    - 漏乘十位/百位
+    - 连续进位错
+
+- code: MATH-G3-C05-K005
+  subject: math
+  grade: 3
+  chapter: 第五章·多位数乘一位数
+  name: 含 0 的乘法
+  description: |
+    任何数乘 0 = 0; 末尾有 0 的简便算法。
+  importance: 4
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C05-K004
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 0 乘任何数忘记得 0
+    - 中间有 0 的进位处理错
+
+- code: MATH-G3-C05-K006
+  subject: math
+  grade: 3
+  chapter: 第五章·多位数乘一位数
+  name: 估算乘法
+  description: |
+    把两位数看成整十数估算, 再算精确值。
+  importance: 3
+  difficulty: 2
+  prerequisites:
+    - MATH-G3-C05-K004
+  successors: []
+  related: []
+  video_urls: []
+  common_errors: []
+
+- code: MATH-G3-C06-K001
+  subject: math
+  grade: 3
+  chapter: 第六章·数字编码
+  name: 数字编码
+  description: |
+    邮政编码、电话号码、身份证号码等编码规则。
+  importance: 2
+  difficulty: 2
+  prerequisites: []
+  successors: []
+  related: []
+  video_urls: []
+  common_errors: []
+
+- code: MATH-G3-C07-K001
+  subject: math
+  grade: 3
+  chapter: 第七章·长方形和正方形
+  name: 四边形的认识
+  description: |
+    认识四边形、长方形、正方形的特征。
+  importance: 3
+  difficulty: 2
+  prerequisites: []
+  successors:
+    - MATH-G3-C07-K002
+  related: []
+  video_urls: []
+  common_errors:
+    - 长方形、正方形、平行四边形混淆
+
+- code: MATH-G3-C07-K002
+  subject: math
+  grade: 3
+  chapter: 第七章·长方形和正方形
+  name: 周长的概念
+  description: |
+    理解周长是封闭图形一周的长度。
+  importance: 4
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C07-K001
+  successors:
+    - MATH-G3-C07-K003
+  related: []
+  video_urls: []
+  common_errors:
+    - 周长和面积混淆
+
+- code: MATH-G3-C07-K003
+  subject: math
+  grade: 3
+  chapter: 第七章·长方形和正方形
+  name: 长方形、正方形周长计算
+  description: |
+    长方形周长 = (长 + 宽) × 2, 正方形周长 = 边长 × 4。
+  importance: 5
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C07-K002
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 长方形周长忘记 ×2
+    - 正方形周长用错公式
+
+- code: MATH-G3-C08-K001
+  subject: math
+  grade: 3
+  chapter: 第八章·分数的初步认识
+  name: 几分之一
+  description: |
+    把一个整体平均分成几份, 每份就是它的几分之一。
+  importance: 4
+  difficulty: 3
+  prerequisites: []
+  successors:
+    - MATH-G3-C08-K002
+  related: []
+  video_urls: []
+  common_errors:
+    - 没平均分
+    - 分子分母写反
+
+- code: MATH-G3-C08-K002
+  subject: math
+  grade: 3
+  chapter: 第八章·分数的初步认识
+  name: 几分之几
+  description: |
+    理解几分之几, 比较同分母分数大小。
+  importance: 4
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C08-K001
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 同分母分数比较搞错方向
+
+- code: MATH-G3-C09-K001
+  subject: math
+  grade: 3
+  chapter: 第九章·数学广角
+  name: 集合思想
+  description: |
+    集合的概念, 重叠问题的韦恩图表示。
+  importance: 3
+  difficulty: 4
+  prerequisites: []
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 重叠部分算错
+
+- code: MATH-G3-C09-K002
+  subject: math
+  grade: 3
+  chapter: 第九章·数学广角
+  name: 搭配问题
+  description: |
+    简单的组合与排列, 解决穿衣、路线等问题。
+  importance: 3
+  difficulty: 4
+  prerequisites: []
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 排列和组合搞混
+    - 漏算/重算
+
+# ============================================
+# 三年级下册 (节选关键节点, 后续补充)
+# ============================================
+
+- code: MATH-G3-C10-K001
+  subject: math
+  grade: 3
+  chapter: 第十章·位置与方向(下)
+  name: 东、南、西、北
+  description: |
+    认识四个基本方向, 能用这些词语描述物体相对位置。
+  importance: 3
+  difficulty: 2
+  prerequisites: []
+  successors:
+    - MATH-G3-C10-K002
+  related: []
+  video_urls: []
+  common_errors:
+    - 方向混淆 (尤其地图上下北下南)
+
+- code: MATH-G3-C10-K002
+  subject: math
+  grade: 3
+  chapter: 第十章·位置与方向(下)
+  name: 东北、东南、西北、西南
+  description: |
+    认识四个复合方向, 能描述物体的具体位置。
+  importance: 3
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C10-K001
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 复合方向搞混
+
+- code: MATH-G3-C11-K001
+  subject: math
+  grade: 3
+  chapter: 第十一章·除数是一位数的除法
+  name: 整十数除以一位数
+  description: |
+    如 60÷3 = 20, 利用数的组成。
+  importance: 3
+  difficulty: 2
+  prerequisites:
+    - MATH-G3-C05-K001
+  successors:
+    - MATH-G3-C11-K002
+  related: []
+  video_urls: []
+  common_errors: []
+
+- code: MATH-G3-C11-K002
+  subject: math
+  grade: 3
+  chapter: 第十一章·除数是一位数的除法
+  name: 两位数除以一位数
+  description: |
+    从最高位除起, 商写在哪一位上。
+  importance: 5
+  difficulty: 4
+  prerequisites:
+    - MATH-G3-C11-K001
+  successors:
+    - MATH-G3-C11-K003
+  related: []
+  video_urls: []
+  common_errors:
+    - 商的位置写错
+    - 漏除某一位
+
+- code: MATH-G3-C11-K003
+  subject: math
+  grade: 3
+  chapter: 第十一章·除数是一位数的除法
+  name: 三位数除以一位数
+  description: |
+    商是两位数或三位数的除法, 包括有余数的情况。
+  importance: 5
+  difficulty: 4
+  prerequisites:
+    - MATH-G3-C11-K002
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 中间有 0 的处理错
+    - 余数处理错 (余数要比除数小)
+
+- code: MATH-G3-C11-K004
+  subject: math
+  grade: 3
+  chapter: 第十一章·除数是一位数的除法
+  name: 商中间或末尾有 0 的除法
+  description: |
+    如 312÷3 = 104, 420÷3 = 140 的特殊情况。
+  importance: 4
+  difficulty: 4
+  prerequisites:
+    - MATH-G3-C11-K003
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 中间 0 漏写
+    - 末尾 0 漏写
+
+- code: MATH-G3-C12-K001
+  subject: math
+  grade: 3
+  chapter: 第十二章·复式统计表
+  name: 复式统计表
+  description: |
+    认识复式统计表, 能从表中获取信息、回答问题。
+  importance: 3
+  difficulty: 3
+  prerequisites: []
+  successors: []
+  related: []
+  video_urls: []
+  common_errors: []
+
+- code: MATH-G3-C13-K001
+  subject: math
+  grade: 3
+  chapter: 第十三章·两位数乘两位数
+  name: 整十数乘整十数
+  description: |
+    如 30×20 = 600, 利用因数末尾 0 的简便算法。
+  importance: 3
+  difficulty: 2
+  prerequisites:
+    - MATH-G3-C05-K001
+  successors:
+    - MATH-G3-C13-K002
+  related: []
+  video_urls: []
+  common_errors:
+    - 0 的个数算错
+
+- code: MATH-G3-C13-K002
+  subject: math
+  grade: 3
+  chapter: 第十三章·两位数乘两位数
+  name: 两位数乘两位数(不进位)
+  description: |
+    用第二个因数每一位去乘第一个因数, 再把积相加。
+  importance: 5
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C13-K001
+  successors:
+    - MATH-G3-C13-K003
+  related: []
+  video_urls: []
+  common_errors:
+    - 错位相加
+    - 漏乘某一位
+
+- code: MATH-G3-C13-K003
+  subject: math
+  grade: 3
+  chapter: 第十三章·两位数乘两位数
+  name: 两位数乘两位数(进位)
+  description: |
+    每乘一位满十进一, 处理连续进位。
+  importance: 5
+  difficulty: 5
+  prerequisites:
+    - MATH-G3-C13-K002
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 忘记进位
+    - 错位相加
+    - 积的位置写错
+
+- code: MATH-G3-C14-K001
+  subject: math
+  grade: 3
+  chapter: 第十四章·面积
+  name: 面积的概念
+  description: |
+    理解面积是物体表面或平面图形的大小。
+  importance: 4
+  difficulty: 2
+  prerequisites:
+    - MATH-G3-C07-K002  # 周长
+  successors:
+    - MATH-G3-C14-K002
+  related: []
+  video_urls: []
+  common_errors:
+    - 面积和周长混淆
+
+- code: MATH-G3-C14-K002
+  subject: math
+  grade: 3
+  chapter: 第十四章·面积
+  name: 面积单位 (平方厘米、平方分米、平方米)
+  description: |
+    认识常用面积单位, 知道 1 平方分米 = 100 平方厘米。
+  importance: 4
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C14-K001
+  successors:
+    - MATH-G3-C14-K003
+  related: []
+  video_urls: []
+  common_errors:
+    - 长度单位和面积单位混淆
+
+- code: MATH-G3-C14-K003
+  subject: math
+  grade: 3
+  chapter: 第十四章·面积
+  name: 长方形、正方形面积计算
+  description: |
+    长方形面积 = 长 × 宽, 正方形面积 = 边长 × 边长。
+  importance: 5
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C14-K002
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 公式记错 (长 × 宽 vs 边长 × 4)
+    - 单位不统一
+
+- code: MATH-G3-C15-K001
+  subject: math
+  grade: 3
+  chapter: 第十五章·年、月、日
+  name: 年、月、日的认识
+  description: |
+    认识年、月、日, 知道大月小月、闰年平年。
+  importance: 3
+  difficulty: 2
+  prerequisites: []
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 大月小月记错
+    - 闰年判断错
+
+- code: MATH-G3-C15-K002
+  subject: math
+  grade: 3
+  chapter: 第十五章·年、月、日
+  name: 24 时计时法
+  description: |
+    认识 24 时计时法, 会进行 12 时和 24 时互换。
+  importance: 3
+  difficulty: 3
+  prerequisites: []
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 12 时和 24 时转换
+
+- code: MATH-G3-C16-K001
+  subject: math
+  grade: 3
+  chapter: 第十六章·小数的初步认识
+  name: 小数的认识
+  description: |
+    认识小数点、小数各部分名称, 会读写小数。
+  importance: 3
+  difficulty: 2
+  prerequisites: []
+  successors:
+    - MATH-G3-C16-K002
+  related: []
+  video_urls: []
+  common_errors: []
+
+- code: MATH-G3-C16-K002
+  subject: math
+  grade: 3
+  chapter: 第十六章·小数的初步认识
+  name: 小数大小的比较
+  description: |
+    比较小数大小的方法 (比整数部分, 再比小数部分)。
+  importance: 3
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C16-K001
+  successors:
+    - MATH-G3-C16-K003
+  related: []
+  video_urls: []
+  common_errors: []
+
+- code: MATH-G3-C16-K003
+  subject: math
+  grade: 3
+  chapter: 第十六章·小数的初步认识
+  name: 简单的小数加减法
+  description: |
+    小数位数相同的小数加减法 (元角分场景)。
+  importance: 4
+  difficulty: 3
+  prerequisites:
+    - MATH-G3-C16-K002
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 小数点没对齐
+    - 单位不统一
+
+- code: MATH-G3-C17-K001
+  subject: math
+  grade: 3
+  chapter: 第十七章·数学广角
+  name: 搭配 (二)
+  description: |
+    稍复杂的组合问题, 用图示法枚举所有可能。
+  importance: 3
+  difficulty: 4
+  prerequisites:
+    - MATH-G3-C09-K002
+  successors: []
+  related: []
+  video_urls: []
+  common_errors:
+    - 漏算
+
+- code: MATH-G3-C17-K002
+  subject: math
+  grade: 3
+  chapter: 第十七章·数学广角
+  name: 我们的校园 (综合实践)
+  description: |
+    解决校园场景中的数学问题 (时间、路径、方案等)。
+  importance: 2
+  difficulty: 3
+  prerequisites: []
+  successors: []
+  related: []
+  video_urls: []
+  common_errors: []

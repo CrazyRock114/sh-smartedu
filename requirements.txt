@@ -1,0 +1,5 @@
+# Python 项目根依赖
+# 后端依赖见 backend/requirements.txt
+# 前端依赖见 web/package.json
+
+PyYAML>=6.0.1
