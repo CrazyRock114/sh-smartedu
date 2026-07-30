@@ -157,4 +157,25 @@ __all__ = [
     "ReviewSubmitRequest",
     "ReviewQueueItem",
     "ErrorStats",
+    "SuggestRequest",
+    "SuggestResponse",
 ]
+
+
+class SuggestRequest(BaseModel):
+    """归因建议 (录入前调用, 不写库)"""
+    question: str = Field(min_length=1, max_length=4096)
+    correct_answer: str = Field(min_length=1, max_length=2048)
+    student_answer: str = Field(min_length=1, max_length=2048)
+    note: Optional[str] = Field(default=None, max_length=1024)
+
+
+class SuggestResponse(BaseModel):
+    """归因建议结果"""
+    error_type: str = Field(description="建议的错因 (7 类之一)")
+    reason: str = Field(default="", description="推理说明")
+    source: str = Field(description="glm / rule")
+    labels: dict[str, str] = Field(
+        default_factory=dict,
+        description="错因中文标签映射, 方便前端直接展示",
+    )
