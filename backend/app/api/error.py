@@ -35,6 +35,7 @@ from app.services.error_service import (
     submit_review,
     update_error,
 )
+from app.services.push_service import check_lock, create_record
 
 router = APIRouter()
 
@@ -125,7 +126,26 @@ async def create_error_endpoint(
     db: AsyncSession = Depends(get_db),
 ):
     """录入错题 (手动 / OCR 文字)"""
+    # 锁屏检查 (阶段 6)
+    lock_reason = await check_lock(db, family, action="study")
+    if lock_reason:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={"error": "NIGHT_LOCK", "message": lock_reason},
+        )
+
     item = await create_error(db, family.id, child_id, payload)
+
+    # 录入后自动推一条 alert (in-app)
+    if family.push_enabled:
+        await create_record(
+            db, family.id,
+            content=f"已录错题: {item.question_text[:30]} · 错因 {item.error_type}",
+            push_type="alert",
+            child_id=child_id,
+            push_channel="in_app",
+        )
+
     return SuccessResponse(data=item, message="录入成功")
 
 
@@ -184,7 +204,27 @@ async def submit_review_endpoint(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail={"error": "INVALID_RESULT", "message": "result 必须是 correct/wrong/skip"},
         )
+
+    # 锁屏检查 (阶段 6)
+    lock_reason = await check_lock(db, family, action="review")
+    if lock_reason:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={"error": "NIGHT_LOCK", "message": lock_reason},
+        )
+
     item = await submit_review(db, family.id, child_id, error_id, result)
+
+    # 答对 6 次标 mastered 时推一条
+    if item.status == "mastered" and family.push_enabled:
+        await create_record(
+            db, family.id,
+            content=f"🎉 掌握了一道错题: {item.question_text[:30]}",
+            push_type="alert",
+            child_id=child_id,
+            push_channel="in_app",
+        )
+
     return SuccessResponse(data=item, message="已记录")
 
 
