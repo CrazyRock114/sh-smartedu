@@ -20,6 +20,7 @@ from app.models import (  # noqa: F401
     MasteryState,
     PushRecord,
     ReviewQueueItem,
+    SmartEduVideo,
     StudyRecord,
     WeeklyVideo,
 )

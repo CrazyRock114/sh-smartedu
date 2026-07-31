@@ -127,4 +127,45 @@ export const curriculumApi = {
     );
     return resp.data.data;
   },
+
+  /**
+   * 真实微课 (从 basic.sh.smartedu.cn API 抓的, 含 resource_id + courseId)
+   * 用于 hero "本周推荐", 跳转到 airClassroomTaskDetail 直达视频播放器
+   */
+  async realVideos(opts: {
+    grade: number;
+    subject: string;
+    version: string;
+    semester: string;
+    limit?: number;
+  }): Promise<RealVideoItem[]> {
+    const resp = await api.get<SuccessResponse<{ items: RealVideoItem[]; total: number }>>(
+      '/smartedu-videos',
+      { params: { ...opts, limit: opts.limit ?? 10 } }
+    );
+    return resp.data.data.items;
+  },
 };
+
+/** 真实微课 item (来自 basic.sh.smartedu.cn) */
+export interface RealVideoItem {
+  id: string;
+  grade: number;
+  subject: string;
+  subject_label: string;
+  version: string;
+  version_label: string;
+  semester: string;
+  term_label: string;
+  resource_id: string;
+  subject_id: string;
+  title: string;
+  school: string | null;
+  teacher: string | null;
+  upload_file_name: string | null;
+  release_time: string | null;
+  video_url: string | null;
+  direct_url: string;
+  importance: number;
+  verified: boolean;
+}

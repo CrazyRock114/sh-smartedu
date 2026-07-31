@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { BookOpen, AlertCircle, CheckCircle2, ChevronRight, ExternalLink, Sparkles, Play } from 'lucide-react';
 import { authApi } from '@/lib/auth';
 import { childrenApi } from '@/lib/children';
-import { curriculumApi, type CurriculumChangeListItem, type WeeklyChaptersData } from '@/lib/curriculum';
+import { curriculumApi, type CurriculumChangeListItem, type WeeklyChaptersData, type RealVideoItem } from '@/lib/curriculum';
 import type { Child } from '@/lib/types';
 import { getErrorMessage } from '@/lib/api';
 import { PageHeader } from '@/components/NavBar';
@@ -68,6 +68,7 @@ export default function CurriculumPage() {
 
   const [changes, setChanges] = useState<CurriculumChangeListItem[]>([]);
   const [weekly, setWeekly] = useState<WeeklyChaptersData | null>(null);
+  const [realVideos, setRealVideos] = useState<RealVideoItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -122,10 +123,13 @@ export default function CurriculumPage() {
     Promise.all([
       curriculumApi.listChanges({ grade, subject, verifiedOnly: false }),
       curriculumApi.weekly({ grade, subject, version, semester }),
+      curriculumApi.realVideos({ grade, subject, version, semester, limit: 5 })
+        .catch(() => [] as RealVideoItem[]),  // realVideos 拉不到不阻塞 UI
     ])
-      .then(([cs, w]) => {
+      .then(([cs, w, rv]) => {
         setChanges(cs);
         setWeekly(w);
+        setRealVideos(rv);
       })
       .catch((e) => setError(getErrorMessage(e)))
       .finally(() => setLoading(false));
@@ -224,16 +228,35 @@ export default function CurriculumPage() {
         </div>
       )}
 
-      {/* 今日推荐微课 (hero) — 优先本周; 否则用 chapter 里 importance 最高的 5 个 */}
+      {/* 今日推荐微课 (hero) — 优先真实微课 (smartedu 直达播放器) */}
       {(() => {
-        const heroVideos =
-          (weekly?.weekly_videos && weekly.weekly_videos.length > 0)
-            ? weekly.weekly_videos.slice(0, 5)
-            : (weekly?.chapters?.flatMap((c) => c.videos ?? []) ?? [])
-                .sort((a, b) => (b.importance ?? 0) - (a.importance ?? 0))
-                .slice(0, 5);
-        if (heroVideos.length === 0) return null;
-        const isFallback = !weekly?.weekly_videos || weekly.weekly_videos.length === 0;
+        // 优先用 smartedu 真实微课 (新窗口直跳视频播放器)
+        // 兜底: weekly.weekly_videos (人工索引) → chapters 里的 video
+        if (realVideos.length === 0
+            && (!weekly?.weekly_videos || weekly.weekly_videos.length === 0)) {
+          return null;
+        }
+        const useReal = realVideos.length > 0;
+        const heroVideos = useReal
+          ? realVideos.map((v) => ({
+              id: v.id,
+              title: v.title,
+              subtitle: [v.teacher, v.school].filter(Boolean).join(' · '),
+              url: v.direct_url,
+              importance: v.importance,
+            }))
+          : (weekly!.weekly_videos.length > 0
+              ? weekly!.weekly_videos.slice(0, 5)
+              : (weekly!.chapters?.flatMap((c) => c.videos ?? []) ?? [])
+                  .sort((a, b) => (b.importance ?? 0) - (a.importance ?? 0))
+                  .slice(0, 5)
+            ).map((v) => ({
+              id: v.id,
+              title: v.episode,
+              subtitle: v.description || '',
+              url: v.direct_url || v.search_url || v.chapter_listing_url,
+              importance: v.importance,
+            }));
         return (
         <section className="mb-6 overflow-hidden rounded-2xl border border-primary-200 bg-gradient-to-br from-primary-50 via-white to-amber-50 p-5 shadow-sm">
           <div className="mb-3 flex items-center gap-2">
@@ -242,51 +265,58 @@ export default function CurriculumPage() {
             </div>
             <div className="flex-1">
               <h2 className="text-base font-bold text-slate-900">
-                {isFallback ? '本学期精选微课' : '本周推荐微课'}
+                {useReal ? '本周真实微课 (直达视频)' : '本周推荐微课'}
               </h2>
-              <p className="text-xs text-slate-500">点开直接看 · 来源: basic.sh.smartedu.cn 空中课堂</p>
+              <p className="text-xs text-slate-500">
+                {useReal
+                  ? '点开直接看视频播放器 · 来源: basic.sh.smartedu.cn 真实抓取'
+                  : '点开搜索结果 · 来自人工章节索引'}
+              </p>
             </div>
             <span className="rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-semibold text-primary-700">
-              {isFallback ? `${heroVideos.length} 节` : `第 ${weekly?.week_index} 周`}
+              {heroVideos.length} 节
             </span>
           </div>
-          <p className="mb-3 rounded-lg bg-white/70 px-3 py-1.5 text-[11px] text-slate-600">
-            💡 点开会在<strong>新窗口</strong>跳到 basic.sh.smartedu.cn 搜索结果（已替你搜好关键词，可挑一个最匹配的看）
-          </p>
+          {useReal ? (
+            <p className="mb-3 rounded-lg bg-emerald-50 px-3 py-1.5 text-[11px] text-emerald-700">
+              ✨ <strong>真实微课</strong>: 从 basic.sh.smartedu.cn 抓取的 resource_id, 点开直跳视频播放器
+            </p>
+          ) : (
+            <p className="mb-3 rounded-lg bg-white/70 px-3 py-1.5 text-[11px] text-slate-600">
+              💡 点开会在<strong>新窗口</strong>跳到 basic.sh.smartedu.cn 搜索结果（已替你搜好关键词）
+            </p>
+          )}
           <ul className="space-y-2">
-            {heroVideos.map((v) => {
-              const url = v.direct_url || v.search_url || v.chapter_listing_url;
-              return (
-                <li key={v.id}>
-                  <a
-                    href={url || '#'}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-md"
-                  >
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-sm">
-                      <Play className="h-4 w-4" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-semibold text-slate-800 group-hover:text-primary-700">
-                        {v.episode}
+            {heroVideos.map((v) => (
+              <li key={v.id}>
+                <a
+                  href={v.url || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-md"
+                >
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-sm">
+                    <Play className="h-4 w-4" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-slate-800 group-hover:text-primary-700">
+                      {v.title}
+                    </p>
+                    {v.subtitle && (
+                      <p className="mt-0.5 truncate text-xs text-slate-500">
+                        {v.subtitle}
                       </p>
-                      {v.description && (
-                        <p className="mt-0.5 line-clamp-1 text-xs text-slate-500">
-                          {v.description}
-                        </p>
-                      )}
-                    </div>
-                    {v.importance >= 4 && (
-                      <span className="flex-shrink-0 rounded bg-rose-100 px-2 py-0.5 text-xs font-semibold text-rose-700">
-                        必看
-                      </span>
                     )}
-                    <ExternalLink className="h-4 w-4 flex-shrink-0 text-slate-400 group-hover:text-primary-600" />
-                  </a>
-                </li>
-              );
-            })}
+                  </div>
+                  {v.importance >= 4 && (
+                    <span className="flex-shrink-0 rounded bg-rose-100 px-2 py-0.5 text-xs font-semibold text-rose-700">
+                      必看
+                    </span>
+                  )}
+                  <ExternalLink className="h-4 w-4 flex-shrink-0 text-slate-400 group-hover:text-primary-600" />
+                </a>
+              </li>
+            ))}
           </ul>
         </section>
         );
