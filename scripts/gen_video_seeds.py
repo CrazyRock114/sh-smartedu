@@ -68,6 +68,29 @@ CURRICULUM = {
                 ],
             },
         },
+        "english": {
+            "人教PEP版": {
+                "2025-fall": [
+                    ("Unit 1·Hello", 1, 4, ["Hello!", "自我介绍", "字母 Aa-Dd", "文具词汇"]),
+                    ("Unit 2·My family", 3, 4, ["家庭成员词汇", "介绍家人", "字母 Ee-Hh", "句型: This is my..."]),
+                    ("Unit 3·At the zoo", 5, 4, ["动物词汇", "动物特征", "字母 Ii-Ll", "句型: It has..."]),
+                    ("Unit 4·My home", 7, 4, ["房间词汇", "家具词汇", "字母 Mm-Pp", "句型: Where is...?"]),
+                    ("Unit 5·What would you like?", 9, 4, ["食物词汇", "饮料词汇", "字母 Qq-Tt", "句型: I'd like..."]),
+                    ("Unit 6·How many?", 12, 4, ["数字 11-20", "询问数量", "字母 Uu-Xx", "句型: How many...?"]),
+                    ("Recycle 1", 14, 3, ["复习 Units 1-3", "复习 Units 4-6", "字母 Yy, Zz"]),
+                    ("Unit 7·Happy birthday!", 16, 4, ["生日词汇", "数字 1-10 复习", "月份", "句型: When is...?"]),
+                ],
+                "2025-spring": [
+                    ("Unit 1·Welcome back to school", 1, 4, ["问候语", "自我介绍复习", "班级物品词汇", "句型: I have..."]),
+                    ("Unit 2·My family", 3, 4, ["家庭成员扩展", "职业词汇", "句型: He/She is...", "描述家人"]),
+                    ("Unit 3·At the zoo", 5, 4, ["动物词汇扩展", "大小高低对比", "句型: It is.../They are...", "故事阅读"]),
+                    ("Unit 4·Where is my car?", 7, 4, ["方位介词", "物品位置", "句型: Where is...?", "询问路线"]),
+                    ("Unit 5·Do you like pears?", 9, 4, ["水果词汇", "喜好表达", "句型: Do you like...?", "回答 Yes/No"]),
+                    ("Unit 6·How many?", 12, 4, ["数字 11-20", "数物品", "句型: How many...?", "数字游戏"]),
+                    ("Recycle 2", 14, 3, ["复习 Units 1-3", "复习 Units 4-6", "综合应用"]),
+                ],
+            },
+        },
     },
     5: {
         "math": {
