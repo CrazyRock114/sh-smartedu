@@ -121,10 +121,10 @@ export default function HomePage() {
                   <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
                 </Link>
                 <Link
-                  href="/curriculum?grade=3&subject=math&version=%E6%B2%AA%E6%95%99%E7%89%88&semester=2025-spring"
+                  href="/curriculum"
                   className="rounded-2xl border border-primary-300 bg-primary-50 px-6 py-3.5 text-base font-semibold text-primary-700 transition hover:bg-primary-100"
                 >
-                  本周微课（G3 数学）↗
+                  选年级看微课 ↗
                 </Link>
               </>
             ) : (
@@ -145,6 +145,25 @@ export default function HomePage() {
               </>
             )}
           </div>
+
+          {/* 年级直达: 朋友家最常问的组合 (登录后显示) */}
+          {loggedIn && (
+            <div className="mx-auto mt-6 max-w-3xl">
+              <p className="mb-2 text-center text-xs text-slate-500">⚡ 朋友家 1 跳直达 (G3-G6 × 沪教版/统编/人教PEP)</p>
+              <div className="flex flex-wrap items-center justify-center gap-2 text-xs">
+                <QuickLink g={3} s="math" v="沪教版" sem="2025-spring" label="G3 数学" />
+                <QuickLink g={4} s="math" v="沪教版" sem="2025-fall" label="G4 数学" />
+                <QuickLink g={5} s="math" v="沪教版" sem="2025-fall" label="G5 数学" />
+                <QuickLink g={6} s="math" v="沪教版" sem="2025-fall" label="G6 数学" />
+                <span className="mx-1 text-slate-300">|</span>
+                <QuickLink g={3} s="chinese" v="统编版" sem="2025-fall" label="G3 语文" />
+                <QuickLink g={4} s="chinese" v="统编版" sem="2025-fall" label="G4 语文" />
+                <QuickLink g={5} s="chinese" v="统编版" sem="2025-fall" label="G5 语文" />
+                <span className="mx-1 text-slate-300">|</span>
+                <QuickLink g={4} s="english" v="人教PEP版" sem="2025-fall" label="G4 英语" />
+              </div>
+            </div>
+          )}
 
           {/* 数据点 */}
           <div className="mx-auto mt-12 grid max-w-2xl grid-cols-3 gap-4 sm:gap-8">
@@ -242,5 +261,16 @@ function Stat({ number, label }: { number: string; label: string }) {
       <div className="text-2xl font-bold text-slate-900 sm:text-3xl">{number}</div>
       <div className="mt-1 text-xs text-slate-500 sm:text-sm">{label}</div>
     </div>
+  );
+}
+
+function QuickLink({ g, s, v, sem, label }: { g: number; s: string; v: string; sem: string; label: string }) {
+  return (
+    <Link
+      href={`/curriculum?grade=${g}&subject=${s}&version=${encodeURIComponent(v)}&semester=${sem}`}
+      className="rounded-full border border-slate-200 bg-white px-3 py-1 text-slate-600 transition hover:border-primary-300 hover:bg-primary-50 hover:text-primary-700"
+    >
+      {label}
+    </Link>
   );
 }
