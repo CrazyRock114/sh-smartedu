@@ -95,7 +95,29 @@ export default function CurriculumPage() {
     setError(null);
     if (currentChild) {
       const tv = currentChild.textbook_versions.find((t) => t.subject === subject);
-      if (tv) setVersion(tv.version);
+      if (tv) {
+        setVersion(tv.version);
+      } else {
+        // 孩子没填该学科教材 → 用学科默认版本
+        const defaults: Record<string, string> = {
+          math: '沪教版',
+          chinese: '统编版',
+          english: '人教PEP版',
+          science: '教科版',
+        };
+        if (defaults[subject]) setVersion(defaults[subject]);
+      }
+    } else {
+      // 没有孩子 → 学科默认版本
+      const defaults: Record<string, string> = {
+        math: '沪教版',
+        chinese: '统编版',
+        english: '人教PEP版',
+        science: '教科版',
+      };
+      if (defaults[subject] && !['沪教版', '统编版', '人教PEP版', '教科版'].includes(version)) {
+        setVersion(defaults[subject]);
+      }
     }
     Promise.all([
       curriculumApi.listChanges({ grade, subject, verifiedOnly: false }),
@@ -202,26 +224,37 @@ export default function CurriculumPage() {
         </div>
       )}
 
-      {/* 今日推荐微课 (hero) */}
-      {weekly && weekly.weekly_videos && weekly.weekly_videos.length > 0 && (
+      {/* 今日推荐微课 (hero) — 优先本周; 否则用 chapter 里 importance 最高的 5 个 */}
+      {(() => {
+        const heroVideos =
+          (weekly?.weekly_videos && weekly.weekly_videos.length > 0)
+            ? weekly.weekly_videos.slice(0, 5)
+            : (weekly?.chapters?.flatMap((c) => c.videos ?? []) ?? [])
+                .sort((a, b) => (b.importance ?? 0) - (a.importance ?? 0))
+                .slice(0, 5);
+        if (heroVideos.length === 0) return null;
+        const isFallback = !weekly?.weekly_videos || weekly.weekly_videos.length === 0;
+        return (
         <section className="mb-6 overflow-hidden rounded-2xl border border-primary-200 bg-gradient-to-br from-primary-50 via-white to-amber-50 p-5 shadow-sm">
           <div className="mb-3 flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-sm">
               <Play className="h-4 w-4" />
             </div>
             <div className="flex-1">
-              <h2 className="text-base font-bold text-slate-900">本周推荐微课</h2>
+              <h2 className="text-base font-bold text-slate-900">
+                {isFallback ? '本学期精选微课' : '本周推荐微课'}
+              </h2>
               <p className="text-xs text-slate-500">点开直接看 · 来源: basic.sh.smartedu.cn 空中课堂</p>
             </div>
             <span className="rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-semibold text-primary-700">
-              第 {weekly.week_index} 周
+              {isFallback ? `${heroVideos.length} 节` : `第 ${weekly?.week_index} 周`}
             </span>
           </div>
           <p className="mb-3 rounded-lg bg-white/70 px-3 py-1.5 text-[11px] text-slate-600">
             💡 点开会在<strong>新窗口</strong>跳到 basic.sh.smartedu.cn 官方播放器（已替你筛好关键词）
           </p>
           <ul className="space-y-2">
-            {weekly.weekly_videos.slice(0, 5).map((v) => {
+            {heroVideos.map((v) => {
               const url = v.direct_url || v.search_url || v.chapter_listing_url;
               return (
                 <li key={v.id}>
@@ -256,7 +289,8 @@ export default function CurriculumPage() {
             })}
           </ul>
         </section>
-      )}
+        );
+      })()}
 
       {/* 本周学什么 */}
       {weekly && (

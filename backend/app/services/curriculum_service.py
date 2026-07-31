@@ -192,17 +192,32 @@ async def get_weekly_chapters(
 
     # Step 2: 章节 (从 knowledge_points 推导)
     chapters = await list_chapters(db, grade, subject, version, semester)
+
+    # Step 2b: 兜底 — 如果 knowledge_points 没数据, 但 WeeklyVideo 有, 用 video 的 chapter
+    video_chapter_pool: list[str] = []
     if not chapters.chapters:
-        return WeeklyChaptersResponse(
-            grade=grade, subject=subject, version=version, semester=semester,
-            week_index=week, chapters=[], weekly_videos=weekly_video_items,
-        )
+        # 拿所有该 (grade, subject, version, semester) 的 video, 按 importance 排序取 chapter 集合
+        all_video_stmt = select(WeeklyVideo).where(
+            and_(
+                WeeklyVideo.grade == grade,
+                WeeklyVideo.subject == subject,
+                WeeklyVideo.version == version,
+                WeeklyVideo.semester == semester,
+            )
+        ).order_by(WeeklyVideo.importance.desc(), WeeklyVideo.week_index, WeeklyVideo.episode)
+        all_videos = (await db.execute(all_video_stmt)).scalars().all()
+        video_chapter_pool = list(dict.fromkeys(v.chapter for v in all_videos))
+        if not video_chapter_pool and not weekly_video_items:
+            return WeeklyChaptersResponse(
+                grade=grade, subject=subject, version=version, semester=semester,
+                week_index=week, chapters=[], weekly_videos=weekly_video_items,
+            )
 
     # Step 3: 决定本周章节范围
     if weekly_video_items:
         # 用 weekly_video 的 chapter 当锚
         week_chapters = list(dict.fromkeys(v.chapter for v in weekly_videos))
-    else:
+    elif chapters.chapters:
         # 兜底: 按章节顺序平均分
         n = len(chapters.chapters)
         per_week = max(1, round(n / 18))
@@ -212,6 +227,9 @@ async def get_weekly_chapters(
             start_idx = n - 1
             end_idx = n
         week_chapters = chapters.chapters[start_idx:end_idx]
+    else:
+        # 全部 chapter 都展示
+        week_chapters = video_chapter_pool
 
     # Step 4: 拿章节对应的知识点
     kp_stmt = select(KnowledgePoint).where(
