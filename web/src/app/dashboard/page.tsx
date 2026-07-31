@@ -23,7 +23,7 @@ import { authApi } from '@/lib/auth';
 import { childrenApi } from '@/lib/children';
 import { analyticsApi, type DashboardData, type HeatmapData } from '@/lib/analytics';
 import { errorsApi } from '@/lib/errors';
-import { curriculumApi } from '@/lib/curriculum';
+import { curriculumApi, type WeeklyChaptersData } from '@/lib/curriculum';
 import type { Child, CurrentUser, ReviewQueueItem, WeeklyReportResponse } from '@/lib/types';
 import { getErrorMessage } from '@/lib/api';
 import { PageHeader, Loading, EmptyState } from '@/components/NavBar';
@@ -58,6 +58,7 @@ export default function DashboardPage() {
   const [heatmap, setHeatmap] = useState<HeatmapData | null>(null);
   const [report, setReport] = useState<WeeklyReportResponse | null>(null);
   const [todayReviews, setTodayReviews] = useState<ReviewQueueItem[]>([]);
+  const [recommendedVideos, setRecommendedVideos] = useState<{ episode: string; url: string; importance: number }[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -84,18 +85,49 @@ export default function DashboardPage() {
       analyticsApi.weeklyReport(childId),
       errorsApi.reviewQueue(childId, 5),
     ])
-      .then(([d, h, r, q]) => {
+      .then(async ([d, h, r, q]) => {
         setDashboard(d);
         setHeatmap(h);
         setReport(r);
         setTodayReviews(q);
+
+        // 拉孩子的本周微课, 推 2 个最重要的
+        const child = children.find((c) => c.id === childId);
+        if (child) {
+          const tv = child.textbook_versions.find((t) => t.subject === 'math') || child.textbook_versions[0];
+          if (tv) {
+            try {
+              const w = await curriculumApi.weekly({
+                grade: child.grade,
+                subject: tv.subject,
+                version: tv.version,
+                semester: '2025-fall',
+              });
+              const vids = (w.weekly_videos && w.weekly_videos.length > 0)
+                ? w.weekly_videos
+                : w.chapters.flatMap((c) => c.videos ?? []);
+              setRecommendedVideos(
+                vids
+                  .sort((a, b) => (b.importance ?? 0) - (a.importance ?? 0))
+                  .slice(0, 2)
+                  .map((v) => ({
+                    episode: v.episode,
+                    url: v.direct_url || v.search_url || v.chapter_listing_url || '#',
+                    importance: v.importance,
+                  }))
+              );
+            } catch {
+              // 静默失败, 不影响 dashboard
+            }
+          }
+        }
         setLoading(false);
       })
       .catch((err) => {
         setError(getErrorMessage(err));
         setLoading(false);
       });
-  }, [childId]);
+  }, [childId, children]);
 
   if (loading && !dashboard) return <Loading label="加载学情中…" />;
 
@@ -195,6 +227,7 @@ export default function DashboardPage() {
           <TodayTodoPanel
             reviews={todayReviews}
             childId={childId}
+            recommendedVideos={recommendedVideos}
           />
 
           {/* 学科掌握度 */}
@@ -536,9 +569,19 @@ function Heatmap({ cells, max }: { cells: { date: string; total: number; by_subj
 }
 
 // === 今日待办面板 (W3 家长视角核心) ===
-function TodayTodoPanel({ reviews, childId }: { reviews: ReviewQueueItem[]; childId: string }) {
+function TodayTodoPanel({
+  reviews,
+  childId,
+  recommendedVideos,
+}: {
+  reviews: ReviewQueueItem[];
+  childId: string;
+  recommendedVideos: { episode: string; url: string; importance: number }[];
+}) {
   const dueReviews = reviews.filter((r) => r.is_overdue || r.next_review_at === null);
-  const totalMin = dueReviews.length * 2; // 粗估每题 2 分钟
+  const reviewMin = dueReviews.length * 2;       // 粗估每题 2 分钟
+  const videoMin = recommendedVideos.length * 10; // 粗估每集 10 分钟
+  const totalMin = reviewMin + videoMin;
 
   return (
     <section className="mb-6 overflow-hidden rounded-2xl border border-primary-200 bg-gradient-to-br from-primary-50 via-white to-amber-50 p-5 shadow-sm">
@@ -550,9 +593,9 @@ function TodayTodoPanel({ reviews, childId }: { reviews: ReviewQueueItem[]; chil
           <div>
             <h2 className="text-base font-bold text-slate-900">今日待办</h2>
             <p className="text-xs text-slate-500">
-              {dueReviews.length > 0
-                ? `${dueReviews.length} 道错题待复习 · 约 ${totalMin} 分钟`
-                : '今天没有待复习, 轻松一天 ✨'}
+              {totalMin > 0
+                ? `复习 ${dueReviews.length} 题 + 看 ${recommendedVideos.length} 集 · 约 ${totalMin} 分钟`
+                : '今天没有待办, 轻松一天 ✨'}
             </p>
           </div>
         </div>
@@ -561,35 +604,82 @@ function TodayTodoPanel({ reviews, childId }: { reviews: ReviewQueueItem[]; chil
         </span>
       </div>
 
-      {dueReviews.length > 0 ? (
-        <ul className="space-y-2">
-          {dueReviews.slice(0, 5).map((r) => (
-            <li key={r.id}>
-              <Link
-                href={`/errors/${r.id}?child_id=${childId}`}
-                className="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-md"
-              >
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-rose-100 to-rose-200 text-rose-700">
-                  <AlertCircle className="h-4 w-4" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-slate-800 group-hover:text-primary-700">
-                    {r.question_text.slice(0, 40)}
-                    {r.question_text.length > 40 ? '…' : ''}
-                  </p>
-                  <p className="mt-0.5 line-clamp-1 text-xs text-slate-500">
-                    {SUBJECT_LABELS_R[r.subject] || r.subject} · {ERROR_TYPE_LABELS[r.error_type] || r.error_type} · 答对 {r.review_count} 次
-                  </p>
-                </div>
-                <ArrowRight className="h-4 w-4 flex-shrink-0 text-slate-400 group-hover:text-primary-600" />
-              </Link>
-            </li>
-          ))}
-        </ul>
-      ) : (
+      {/* 复习区 */}
+      {dueReviews.length > 0 && (
+        <div className="mb-3">
+          <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+            📚 复习 ({dueReviews.length})
+          </p>
+          <ul className="space-y-1.5">
+            {dueReviews.slice(0, 5).map((r) => (
+              <li key={r.id}>
+                <Link
+                  href={`/errors/${r.id}?child_id=${childId}`}
+                  className="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-2.5 transition hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-md"
+                >
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-rose-100 to-rose-200 text-rose-700">
+                    <AlertCircle className="h-3.5 w-3.5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-slate-800 group-hover:text-primary-700">
+                      {r.question_text.slice(0, 40)}
+                      {r.question_text.length > 40 ? '…' : ''}
+                    </p>
+                    <p className="mt-0.5 line-clamp-1 text-[11px] text-slate-500">
+                      {SUBJECT_LABELS_R[r.subject] || r.subject} · {ERROR_TYPE_LABELS[r.error_type] || r.error_type} · 答对 {r.review_count} 次
+                    </p>
+                  </div>
+                  <ArrowRight className="h-3.5 w-3.5 flex-shrink-0 text-slate-400 group-hover:text-primary-600" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* 微课区 */}
+      {recommendedVideos.length > 0 && (
+        <div className="mb-1">
+          <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+            🎬 今日 2 集微课 ({recommendedVideos.length})
+          </p>
+          <ul className="space-y-1.5">
+            {recommendedVideos.map((v, i) => (
+              <li key={i}>
+                <a
+                  href={v.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-2.5 transition hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-md"
+                >
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-sm">
+                    <Play className="h-3.5 w-3.5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-semibold text-slate-800 group-hover:text-primary-700">
+                      {v.episode}
+                    </p>
+                    <p className="mt-0.5 text-[11px] text-slate-500">
+                      basic.sh.smartedu.cn · 约 10 分钟
+                    </p>
+                  </div>
+                  {v.importance >= 4 && (
+                    <span className="flex-shrink-0 rounded bg-rose-100 px-1.5 py-0.5 text-[10px] font-semibold text-rose-700">
+                      必看
+                    </span>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* 0 任务提示 */}
+      {dueReviews.length === 0 && recommendedVideos.length === 0 && (
         <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-700">
           <CheckCircle2 className="mr-1 inline h-3.5 w-3.5" />
-          今日已无错题复习任务。可以去看几节本周微课, 或者休息一下。
+          今日已无错题复习任务, 也无推荐微课。享受轻松一天。
         </div>
       )}
 
