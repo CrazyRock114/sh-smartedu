@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { BookOpen, AlertCircle, CheckCircle2, ChevronRight, ExternalLink, Sparkles, Play } from 'lucide-react';
 import { authApi } from '@/lib/auth';
@@ -46,12 +46,26 @@ const CHANGE_TYPE_BADGE: Record<string, { label: string; color: string }> = {
 
 export default function CurriculumPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [children, setChildren] = useState<Child[]>([]);
   const [childId, setChildId] = useState<string | null>(null);
-  const [subject, setSubject] = useState('math');
-  const [version, setVersion] = useState('沪教版');
-  const [semester, setSemester] = useState('2024-fall');
+  // 默认值: 三年级 / 数学 / 沪教版 / 2025 春季 (G3 孩子常用)
+  const [subject, setSubject] = useState(
+    () => searchParams.get('subject') || 'math'
+  );
+  const [version, setVersion] = useState(
+    () => searchParams.get('version') || '沪教版'
+  );
+  const [semester, setSemester] = useState(
+    () => searchParams.get('semester') || '2025-spring'
+  );
+  const [fixedGrade, setFixedGrade] = useState<number | null>(
+    () => {
+      const g = searchParams.get('grade');
+      return g ? parseInt(g, 10) : null;
+    }
+  );
 
   const [changes, setChanges] = useState<CurriculumChangeListItem[]>([]);
   const [weekly, setWeekly] = useState<WeeklyChaptersData | null>(null);
@@ -73,7 +87,8 @@ export default function CurriculumPage() {
   }, [router]);
 
   const currentChild = children.find((c) => c.id === childId);
-  const grade = currentChild?.grade ?? 3;
+  // 优先: URL query grade > 孩子 grade > 默认 3
+  const grade = fixedGrade ?? currentChild?.grade ?? 3;
 
   useEffect(() => {
     if (!childId) return;
