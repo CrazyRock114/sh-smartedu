@@ -5,13 +5,15 @@ from pathlib import Path
 from urllib.parse import quote
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "data" / "videos"
+# 2026-07-31 修正: 改用 searchPage (真实搜索结果页), 不再用 airClassRoom (?keyword= 会"暂无数据")
+SEARCHPAGE = "https://basic.sh.smartedu.cn/airclassroom/searchPage"
 AIRCLASS = "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
 
 SUBJECT_LABELS = {"math": "数学", "chinese": "语文", "english": "英语", "science": "科学"}
 
 
 def url(kw):
-    return f"{AIRCLASS}?keyword={quote(kw)}"
+    return f"{SEARCHPAGE}?keyword={quote(kw)}"
 
 
 def make_record(grade, subject, version, semester, chapter, episode, week, importance=3, kps=None):
@@ -21,7 +23,7 @@ def make_record(grade, subject, version, semester, chapter, episode, week, impor
         "grade": grade, "subject": subject, "version": version, "semester": semester,
         "chapter": chapter, "episode": episode,
         "search_url": url(episode),
-        "chapter_listing_url": AIRCLASS,
+        "chapter_listing_url": f"{SEARCHPAGE}?keyword={quote(chapter)}",
         "week_index": week, "importance": importance,
         "knowledge_point_codes": kps,
         "description": f"{version}{grade}年级{SUBJECT_LABELS[subject]}{semester} - {chapter}: {episode}",

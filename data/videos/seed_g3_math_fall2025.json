@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "updated_at": "2026-07-31",
-  "note": "沪教版三年级数学第一学期 (2025秋) 空中课堂微课索引。每个知识点配 3 个 URL (按可信度): direct_url > search_url > chapter_listing_url。朋友点 search_url 即可跳到 basic.sh.smartedu.cn 看相关微课。",
+  "note": "沪教版三年级数学第一学期 (2025秋) 空中课堂微课索引。每个知识点配 3 个 URL (按可信度): direct_url > search_url > chapter_listing_url。朋友点 search_url 即可跳到 basic.sh.smartedu.cn 看相关微课。 | 2026-07-31 修正 search_url: airClassRoom?keyword= -> searchPage?keyword= (smartedu 列表页 ?keyword= 会\"暂无数据\")",
   "source": "https://basic.sh.smartedu.cn/airclassroom/",
   "videos": [
     {
@@ -17,8 +17,8 @@
         "MATH-G3-C01-K001"
       ],
       "description": "认识秒针, 知道 1 分 = 60 秒, 会读写秒。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=秒的认识",
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%A7%92%E7%9A%84%E8%AE%A4%E8%AF%86",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%B8%80%E7%AB%A0%C2%B7%E6%97%B6%E3%80%81%E5%88%86%E3%80%81%E7%A7%92",
       "verified": false
     },
     {
@@ -34,9 +34,9 @@
         "MATH-G3-C01-K002"
       ],
       "description": "时、分、秒之间的换算 (1 时=60 分, 1 分=60 秒)。能进行简单的时间计算。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=时间单位换算 (时-分-秒)",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E6%97%B6%E9%97%B4%E5%8D%95%E4%BD%8D%E6%8D%A2%E7%AE%97%20%28%E6%97%B6-%E5%88%86-%E7%A7%92%29",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%B8%80%E7%AB%A0%C2%B7%E6%97%B6%E3%80%81%E5%88%86%E3%80%81%E7%A7%92"
     },
     {
       "grade": 3,
@@ -51,9 +51,9 @@
         "MATH-G3-C01-K003"
       ],
       "description": "能估算日常生活中的时间, 如做作业、看动画片等。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=估算时间",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E4%BC%B0%E7%AE%97%E6%97%B6%E9%97%B4",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%B8%80%E7%AB%A0%C2%B7%E6%97%B6%E3%80%81%E5%88%86%E3%80%81%E7%A7%92"
     },
     {
       "grade": 3,
@@ -68,9 +68,9 @@
         "MATH-G3-C02-K001"
       ],
       "description": "两位数加减两位数, 含进位 / 退位。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=两位数加减法",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E4%B8%A4%E4%BD%8D%E6%95%B0%E5%8A%A0%E5%87%8F%E6%B3%95",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%BA%8C%E7%AB%A0%C2%B7%E4%B8%87%E4%BB%A5%E5%86%85%E7%9A%84%E5%8A%A0%E6%B3%95%E5%92%8C%E5%87%8F%E6%B3%95%28%E4%B8%80%29"
     },
     {
       "grade": 3,
@@ -85,9 +85,9 @@
         "MATH-G3-C02-K002"
       ],
       "description": "几百几十加减几百几十的口算与笔算。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=几百几十加减几百几十",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E5%87%A0%E7%99%BE%E5%87%A0%E5%8D%81%E5%8A%A0%E5%87%8F%E5%87%A0%E7%99%BE%E5%87%A0%E5%8D%81",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%BA%8C%E7%AB%A0%C2%B7%E4%B8%87%E4%BB%A5%E5%86%85%E7%9A%84%E5%8A%A0%E6%B3%95%E5%92%8C%E5%87%8F%E6%B3%95%28%E4%B8%80%29"
     },
     {
       "grade": 3,
@@ -102,9 +102,9 @@
         "MATH-G3-C02-K003"
       ],
       "description": "万以内加减法, 不含进位 / 退位。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=万以内加减法 (不进位不退位)",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E4%B8%87%E4%BB%A5%E5%86%85%E5%8A%A0%E5%87%8F%E6%B3%95%20%28%E4%B8%8D%E8%BF%9B%E4%BD%8D%E4%B8%8D%E9%80%80%E4%BD%8D%29",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%BA%8C%E7%AB%A0%C2%B7%E4%B8%87%E4%BB%A5%E5%86%85%E7%9A%84%E5%8A%A0%E6%B3%95%E5%92%8C%E5%87%8F%E6%B3%95%28%E4%B8%80%29"
     },
     {
       "grade": 3,
@@ -119,9 +119,9 @@
         "MATH-G3-C02-K004"
       ],
       "description": "万以内加减法, 含连续进位 / 退位。期末必考。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=万以内加减法 (含进位退位)",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E4%B8%87%E4%BB%A5%E5%86%85%E5%8A%A0%E5%87%8F%E6%B3%95%20%28%E5%90%AB%E8%BF%9B%E4%BD%8D%E9%80%80%E4%BD%8D%29",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%BA%8C%E7%AB%A0%C2%B7%E4%B8%87%E4%BB%A5%E5%86%85%E7%9A%84%E5%8A%A0%E6%B3%95%E5%92%8C%E5%87%8F%E6%B3%95%28%E4%B8%80%29"
     },
     {
       "grade": 3,
@@ -136,9 +136,9 @@
         "MATH-G3-C02-K005"
       ],
       "description": "用估算解决实际生活问题, 培养数感。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=加减法估算",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E5%8A%A0%E5%87%8F%E6%B3%95%E4%BC%B0%E7%AE%97",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%BA%8C%E7%AB%A0%C2%B7%E4%B8%87%E4%BB%A5%E5%86%85%E7%9A%84%E5%8A%A0%E6%B3%95%E5%92%8C%E5%87%8F%E6%B3%95%28%E4%B8%80%29"
     },
     {
       "grade": 3,
@@ -153,9 +153,9 @@
         "MATH-G3-C03-K001"
       ],
       "description": "认识长度单位毫米, 1 厘米 = 10 毫米。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=毫米的认识",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E6%AF%AB%E7%B1%B3%E7%9A%84%E8%AE%A4%E8%AF%86",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%B8%89%E7%AB%A0%C2%B7%E6%B5%8B%E9%87%8F"
     },
     {
       "grade": 3,
@@ -170,9 +170,9 @@
         "MATH-G3-C03-K002"
       ],
       "description": "认识分米, 1 分米 = 10 厘米 = 100 毫米。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=分米的认识",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E5%88%86%E7%B1%B3%E7%9A%84%E8%AE%A4%E8%AF%86",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%B8%89%E7%AB%A0%C2%B7%E6%B5%8B%E9%87%8F"
     },
     {
       "grade": 3,
@@ -187,9 +187,9 @@
         "MATH-G3-C03-K003"
       ],
       "description": "认识长度单位千米, 1 千米 = 1000 米, 应用在路程 / 速度。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=千米的认识",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E5%8D%83%E7%B1%B3%E7%9A%84%E8%AE%A4%E8%AF%86",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%B8%89%E7%AB%A0%C2%B7%E6%B5%8B%E9%87%8F"
     },
     {
       "grade": 3,
@@ -204,9 +204,9 @@
         "MATH-G3-C03-K004"
       ],
       "description": "认识质量单位吨, 1 吨 = 1000 千克, 体验生活中常见物体质量。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=吨的认识",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E5%90%A8%E7%9A%84%E8%AE%A4%E8%AF%86",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%B8%89%E7%AB%A0%C2%B7%E6%B5%8B%E9%87%8F"
     },
     {
       "grade": 3,
@@ -221,9 +221,9 @@
         "MATH-G3-C03-K005"
       ],
       "description": "应用千米 / 速度 / 时间解决实际行程问题, 期末必考。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=解决问题 (路程-速度-时间)",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98%20%28%E8%B7%AF%E7%A8%8B-%E9%80%9F%E5%BA%A6-%E6%97%B6%E9%97%B4%29",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%B8%89%E7%AB%A0%C2%B7%E6%B5%8B%E9%87%8F"
     },
     {
       "grade": 3,
@@ -238,9 +238,9 @@
         "MATH-G3-C04-K001"
       ],
       "description": "理解倍是几个相同加数的和, 求一个数是另一个数的几倍。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=倍的认识",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E5%80%8D%E7%9A%84%E8%AE%A4%E8%AF%86",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E5%9B%9B%E7%AB%A0%C2%B7%E5%80%8D%E7%9A%84%E8%AE%A4%E8%AF%86"
     },
     {
       "grade": 3,
@@ -255,9 +255,9 @@
         "MATH-G3-C04-K002"
       ],
       "description": "用乘法解决“一个数的几倍是多少”的实际问题。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=求一个数的几倍是多少",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E6%B1%82%E4%B8%80%E4%B8%AA%E6%95%B0%E7%9A%84%E5%87%A0%E5%80%8D%E6%98%AF%E5%A4%9A%E5%B0%91",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E5%9B%9B%E7%AB%A0%C2%B7%E5%80%8D%E7%9A%84%E8%AE%A4%E8%AF%86"
     },
     {
       "grade": 3,
@@ -272,9 +272,9 @@
         "MATH-G3-C05-K001"
       ],
       "description": "整十 / 整百 / 整千数乘一位数的口算。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=整十整百数乘一位数",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E6%95%B4%E5%8D%81%E6%95%B4%E7%99%BE%E6%95%B0%E4%B9%98%E4%B8%80%E4%BD%8D%E6%95%B0",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%BA%94%E7%AB%A0%C2%B7%E5%A4%9A%E4%BD%8D%E6%95%B0%E4%B9%98%E4%B8%80%E4%BD%8D%E6%95%B0"
     },
     {
       "grade": 3,
@@ -289,9 +289,9 @@
         "MATH-G3-C05-K002"
       ],
       "description": "笔算两三位数乘一位数, 不含进位。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=两三位数乘一位数 (不进位)",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E4%B8%A4%E4%B8%89%E4%BD%8D%E6%95%B0%E4%B9%98%E4%B8%80%E4%BD%8D%E6%95%B0%20%28%E4%B8%8D%E8%BF%9B%E4%BD%8D%29",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%BA%94%E7%AB%A0%C2%B7%E5%A4%9A%E4%BD%8D%E6%95%B0%E4%B9%98%E4%B8%80%E4%BD%8D%E6%95%B0"
     },
     {
       "grade": 3,
@@ -306,9 +306,9 @@
         "MATH-G3-C05-K003"
       ],
       "description": "笔算两三位数乘一位数, 含连续进位。期末必考。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=两三位数乘一位数 (含进位)",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E4%B8%A4%E4%B8%89%E4%BD%8D%E6%95%B0%E4%B9%98%E4%B8%80%E4%BD%8D%E6%95%B0%20%28%E5%90%AB%E8%BF%9B%E4%BD%8D%29",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%BA%94%E7%AB%A0%C2%B7%E5%A4%9A%E4%BD%8D%E6%95%B0%E4%B9%98%E4%B8%80%E4%BD%8D%E6%95%B0"
     },
     {
       "grade": 3,
@@ -323,9 +323,9 @@
         "MATH-G3-C05-K004"
       ],
       "description": "中间或末尾有 0 的多位数乘一位数, 易错点。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=含 0 的乘法",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E5%90%AB%200%20%E7%9A%84%E4%B9%98%E6%B3%95",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%BA%94%E7%AB%A0%C2%B7%E5%A4%9A%E4%BD%8D%E6%95%B0%E4%B9%98%E4%B8%80%E4%BD%8D%E6%95%B0"
     },
     {
       "grade": 3,
@@ -340,9 +340,9 @@
         "MATH-G3-C05-K005"
       ],
       "description": "两步连乘解决实际问题, 期末必考。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=解决问题 (连乘)",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98%20%28%E8%BF%9E%E4%B9%98%29",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%BA%94%E7%AB%A0%C2%B7%E5%A4%9A%E4%BD%8D%E6%95%B0%E4%B9%98%E4%B8%80%E4%BD%8D%E6%95%B0"
     },
     {
       "grade": 3,
@@ -357,9 +357,9 @@
         "MATH-G3-C06-K001"
       ],
       "description": "邮政编码 / 身份证号 / 学号等数字编码的含义。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=数字编码与身份证",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E6%95%B0%E5%AD%97%E7%BC%96%E7%A0%81%E4%B8%8E%E8%BA%AB%E4%BB%BD%E8%AF%81",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E5%85%AD%E7%AB%A0%C2%B7%E6%95%B0%E5%AD%97%E7%BC%96%E7%A0%81"
     },
     {
       "grade": 3,
@@ -374,9 +374,9 @@
         "MATH-G3-C07-K001"
       ],
       "description": "认识四边形 / 长方形 / 正方形 / 平行四边形的特征。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=四边形的认识",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E5%9B%9B%E8%BE%B9%E5%BD%A2%E7%9A%84%E8%AE%A4%E8%AF%86",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%B8%83%E7%AB%A0%C2%B7%E9%95%BF%E6%96%B9%E5%BD%A2%E5%92%8C%E6%AD%A3%E6%96%B9%E5%BD%A2"
     },
     {
       "grade": 3,
@@ -391,9 +391,9 @@
         "MATH-G3-C07-K002"
       ],
       "description": "理解周长含义, 会测量和计算长方形 / 正方形周长。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=周长",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E5%91%A8%E9%95%BF",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%B8%83%E7%AB%A0%C2%B7%E9%95%BF%E6%96%B9%E5%BD%A2%E5%92%8C%E6%AD%A3%E6%96%B9%E5%BD%A2"
     },
     {
       "grade": 3,
@@ -408,9 +408,9 @@
         "MATH-G3-C07-K003"
       ],
       "description": "长方形周长 = (长+宽)×2, 正方形周长 = 边长×4。期末必考。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=长方形和正方形的周长计算",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E9%95%BF%E6%96%B9%E5%BD%A2%E5%92%8C%E6%AD%A3%E6%96%B9%E5%BD%A2%E7%9A%84%E5%91%A8%E9%95%BF%E8%AE%A1%E7%AE%97",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%B8%83%E7%AB%A0%C2%B7%E9%95%BF%E6%96%B9%E5%BD%A2%E5%92%8C%E6%AD%A3%E6%96%B9%E5%BD%A2"
     },
     {
       "grade": 3,
@@ -425,9 +425,9 @@
         "MATH-G3-C08-K001"
       ],
       "description": "理解几分之一的含义, 会读写分数。期末必考。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=几分之一",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E5%87%A0%E5%88%86%E4%B9%8B%E4%B8%80",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E5%85%AB%E7%AB%A0%C2%B7%E5%88%86%E6%95%B0%E7%9A%84%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86"
     },
     {
       "grade": 3,
@@ -442,9 +442,9 @@
         "MATH-G3-C08-K002"
       ],
       "description": "理解几分之几的含义, 比较同分母分数大小。期末必考。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=几分之几",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E5%87%A0%E5%88%86%E4%B9%8B%E5%87%A0",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E5%85%AB%E7%AB%A0%C2%B7%E5%88%86%E6%95%B0%E7%9A%84%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86"
     },
     {
       "grade": 3,
@@ -459,9 +459,9 @@
         "MATH-G3-C09-K001"
       ],
       "description": "用韦恩图解决重叠计数问题, 容斥原理初步。",
-      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=集合 (重叠问题)",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E9%9B%86%E5%90%88%20%28%E9%87%8D%E5%8F%A0%E9%97%AE%E9%A2%98%29",
       "verified": false,
-      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=%E7%AC%AC%E4%B9%9D%E7%AB%A0%C2%B7%E6%95%B0%E5%AD%A6%E5%B9%BF%E8%A7%92%E2%80%94%E2%80%94%E9%9B%86%E5%90%88"
     }
   ]
 }

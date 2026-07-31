@@ -10,11 +10,21 @@ from urllib.parse import quote
 OUT_DIR = Path(__file__).resolve().parent.parent / "data" / "videos"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
+# 2026-07-31 修正: smartedu 的 airClassRoom 列表页用 ?keyword= 时直接 "暂无数据",
+# 朋友家点开跳到错年级/学科的列表. 改用 searchPage 真实搜索结果页
+# (验证: https://basic.sh.smartedu.cn/airclassroom/searchPage?keyword=大数的大小比较 有 6 条结果)
+SEARCHPAGE = "https://basic.sh.smartedu.cn/airclassroom/searchPage"
 AIRCLASS = "https://basic.sh.smartedu.cn/airclassroom/airClassRoom"
 
 
 def url(keyword: str) -> str:
-    return f"{AIRCLASS}?keyword={quote(keyword)}"
+    """生成 episode 搜索结果 URL (新窗口跳到 smartedu 搜索结果页)"""
+    return f"{SEARCHPAGE}?keyword={quote(keyword)}"
+
+
+def chapter_listing_url(keyword: str) -> str:
+    """生成章节搜索结果 URL (新窗口跳到 smartedu 章节搜索结果页)"""
+    return f"{SEARCHPAGE}?keyword={quote(keyword)}"
 
 
 # 章节数据: {grade: {subject: {version: {semester: [chapter, ...]}}}}
@@ -191,7 +201,7 @@ def gen_episode_url(grade: int, subject: str, version: str, semester: str,
         "chapter": chapter,
         "episode": episode,
         "search_url": url(kw),
-        "chapter_listing_url": AIRCLASS,
+        "chapter_listing_url": chapter_listing_url(chapter),
         "week_index": 0,  # 在 caller 覆盖
         "importance": 3,
         "knowledge_point_codes": [],

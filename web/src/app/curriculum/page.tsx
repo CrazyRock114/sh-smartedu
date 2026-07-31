@@ -251,7 +251,7 @@ export default function CurriculumPage() {
             </span>
           </div>
           <p className="mb-3 rounded-lg bg-white/70 px-3 py-1.5 text-[11px] text-slate-600">
-            💡 点开会在<strong>新窗口</strong>跳到 basic.sh.smartedu.cn 官方播放器（已替你筛好关键词）
+            💡 点开会在<strong>新窗口</strong>跳到 basic.sh.smartedu.cn 搜索结果（已替你搜好关键词，可挑一个最匹配的看）
           </p>
           <ul className="space-y-2">
             {heroVideos.map((v) => {
