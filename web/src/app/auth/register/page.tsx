@@ -40,13 +40,18 @@ export default function RegisterPage() {
 
     setLoading(true);
     try {
-      await authApi.register({
+      const resp = await authApi.register({
         email: email.trim(),
         password,
         nickname: nickname.trim() || undefined,
         invite_code: inviteCode.trim() || undefined,
       });
-      router.push('/dashboard');
+      // 新用户 → 引导页, 老用户直接进 dashboard
+      if (resp?.is_new_user) {
+        router.push('/welcome?next=/dashboard');
+      } else {
+        router.push('/dashboard');
+      }
     } catch (err) {
       setError(getErrorMessage(err));
     } finally {
