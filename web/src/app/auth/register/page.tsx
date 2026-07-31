@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { authApi } from '@/lib/auth';
 import { getErrorMessage } from '@/lib/api';
-import { UserPlus, Eye, EyeOff } from 'lucide-react';
+import { UserPlus, Eye, EyeOff, GraduationCap, Sparkles, Check } from 'lucide-react';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -48,122 +48,174 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-4 py-12">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-primary-600">学迹</h1>
-        <p className="mt-1 text-sm text-gray-500">注册新账号</p>
+    <div className="flex min-h-screen bg-slate-50">
+      {/* 左侧品牌 */}
+      <div className="relative hidden w-0 flex-1 overflow-hidden bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 lg:flex lg:w-1/2">
+        <div className="pointer-events-none absolute inset-0 opacity-30">
+          <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-white blur-3xl" />
+          <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-amber-300 blur-3xl" />
+        </div>
+        <div className="relative z-10 flex flex-col justify-between p-12 text-white">
+          <div className="flex items-center gap-2">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur">
+              <GraduationCap className="h-6 w-6" />
+            </div>
+            <div className="text-2xl font-bold">学迹 · Xueji</div>
+          </div>
+
+          <div className="space-y-6">
+            <h1 className="text-4xl font-bold leading-tight">
+              15 秒注册<br />
+              立即开始
+            </h1>
+            <p className="text-lg text-primary-100">
+              对接 basic.sh.smartedu.cn 官方免费微课，不重复造内容
+            </p>
+            <div className="space-y-2 text-sm text-primary-100">
+              <div className="flex items-center gap-2">
+                <Check className="h-4 w-4" />邮箱 + 密码就够, 不用绑手机
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-4 w-4" />5 大模块, 满足学情 / 错题 / 图谱需求
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-4 w-4" />公益项目, 不商业化, 不收费
+              </div>
+            </div>
+          </div>
+
+          <div className="text-xs text-primary-200">v0.2 · 自用 + 朋友圈公益项目</div>
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            邮箱 <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="email"
-            type="email"
-            required
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100"
-            placeholder="you@example.com"
-          />
-        </div>
+      {/* 右侧表单 */}
+      <div className="flex flex-1 flex-col justify-center px-4 py-8 sm:px-6 lg:px-20">
+        <div className="mx-auto w-full max-w-sm">
+          <div className="mb-6 flex items-center gap-2 lg:hidden">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 text-white">
+              <GraduationCap className="h-5 w-5" />
+            </div>
+            <div className="text-xl font-bold text-slate-900">学迹</div>
+          </div>
 
-        <div>
-          <label htmlFor="nickname" className="block text-sm font-medium text-gray-700">
-            家长昵称 <span className="text-xs text-gray-400">(可选)</span>
-          </label>
-          <input
-            id="nickname"
-            type="text"
-            maxLength={64}
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100"
-            placeholder="默认取邮箱前缀"
-          />
-        </div>
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">注册新账号</h2>
+          <p className="mt-2 text-sm text-slate-500">邮箱 + 密码, 1 分钟搞定</p>
 
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-            密码 <span className="text-red-500">*</span>
-          </label>
-          <div className="relative mt-1">
-            <input
-              id="password"
-              type={showPwd ? 'text' : 'password'}
-              required
-              minLength={8}
-              autoComplete="new-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100"
-            />
+          <form onSubmit={handleSubmit} className="mt-6 space-y-3.5">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-slate-700">
+                邮箱 <span className="text-rose-500">*</span>
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                placeholder="you@example.com"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="nickname" className="block text-sm font-medium text-slate-700">
+                家长昵称 <span className="text-xs text-slate-400">(可选)</span>
+              </label>
+              <input
+                id="nickname"
+                type="text"
+                maxLength={64}
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                className="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                placeholder="默认取邮箱前缀"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-slate-700">
+                密码 <span className="text-rose-500">*</span>
+              </label>
+              <div className="relative mt-1.5">
+                <input
+                  id="password"
+                  type={showPwd ? 'text' : 'password'}
+                  required
+                  minLength={8}
+                  autoComplete="new-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full rounded-xl border border-slate-200 px-3 py-2.5 pr-10 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPwd(!showPwd)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-slate-400 hover:text-slate-600"
+                >
+                  {showPwd ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+              <p className="mt-1 text-xs text-slate-400">至少 8 位, 建议字母+数字</p>
+            </div>
+
+            <div>
+              <label htmlFor="confirm" className="block text-sm font-medium text-slate-700">
+                确认密码 <span className="text-rose-500">*</span>
+              </label>
+              <input
+                id="confirm"
+                type={showPwd ? 'text' : 'password'}
+                required
+                autoComplete="new-password"
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+                className="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="invite" className="block text-sm font-medium text-slate-700">
+                邀请码 <span className="text-xs text-slate-400">(开放注册可留空)</span>
+              </label>
+              <input
+                id="invite"
+                type="text"
+                maxLength={32}
+                value={inviteCode}
+                onChange={(e) => setInviteCode(e.target.value)}
+                className="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                placeholder="向石头要"
+              />
+            </div>
+
+            {error && (
+              <div className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5 text-sm text-rose-700">
+                {error}
+              </div>
+            )}
+
             <button
-              type="button"
-              onClick={() => setShowPwd(!showPwd)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-gray-400 hover:text-gray-600"
+              type="submit"
+              disabled={loading}
+              className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:shadow-md disabled:opacity-60"
             >
-              {showPwd ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              <UserPlus className="h-4 w-4" />
+              {loading ? '注册中…' : '注册'}
             </button>
-          </div>
-          <p className="mt-1 text-xs text-gray-400">至少 8 位, 建议字母+数字</p>
+          </form>
+
+          <p className="mt-6 text-center text-sm text-slate-500">
+            已有账号？
+            <Link
+              href="/auth/login"
+              className="ml-1 font-semibold text-primary-600 hover:text-primary-700"
+            >
+              去登录
+            </Link>
+          </p>
         </div>
-
-        <div>
-          <label htmlFor="confirm" className="block text-sm font-medium text-gray-700">
-            确认密码 <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="confirm"
-            type={showPwd ? 'text' : 'password'}
-            required
-            autoComplete="new-password"
-            value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="invite" className="block text-sm font-medium text-gray-700">
-            邀请码 <span className="text-xs text-gray-400">(开放注册可留空)</span>
-          </label>
-          <input
-            id="invite"
-            type="text"
-            maxLength={32}
-            value={inviteCode}
-            onChange={(e) => setInviteCode(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100"
-            placeholder="向石头要"
-          />
-        </div>
-
-        {error && (
-          <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-            {error}
-          </div>
-        )}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-500 py-2.5 font-medium text-white transition hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          <UserPlus className="h-4 w-4" />
-          {loading ? '注册中…' : '注册'}
-        </button>
-      </form>
-
-      <p className="mt-6 text-center text-sm text-gray-500">
-        已有账号？
-        <Link href="/auth/login" className="ml-1 font-medium text-primary-600 hover:underline">
-          去登录
-        </Link>
-      </p>
-    </main>
+      </div>
+    </div>
   );
 }

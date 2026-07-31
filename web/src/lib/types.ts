@@ -238,3 +238,29 @@ export const ERROR_STATUS_LABELS: Record<ErrorItem['status'], string> = {
   mastered: '已掌握',
   archived: '已归档',
 };
+
+// === 学情 / 周报 ===
+export interface WeeklyReportResponse {
+  week_start: string;
+  week_end: string;
+  total_new_errors: number;
+  total_reviewed: number;
+  total_mastered: number;
+  highlights: string[];
+  next_week_focus: string[];
+  by_subject: Record<
+    string,
+    { new_errors: number; reviewed: number; mastered: number; mastery_score: number }
+  >;
+}
+
+// === Push 偏好 + 锁屏 ===
+export const SUBJECT_LABELS: Record<string, string> = {
+  math: '数学',
+  chinese: '语文',
+  english: '英语',
+  science: '科学',
+  moral: '道德与法治',
+  pe: '体育',
+  art: '美术',
+};

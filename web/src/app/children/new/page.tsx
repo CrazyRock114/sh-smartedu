@@ -12,8 +12,9 @@ import {
   type Subject,
   type SubjectTextbookVersion,
 } from '@/lib/types';
-import { Save, ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Plus, Save, BookOpen } from 'lucide-react';
 import Link from 'next/link';
+import { PageHeader } from '@/components/NavBar';
 
 export default function NewChildPage() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function NewChildPage() {
   const [className, setClassName] = useState('');
   const [schoolName, setSchoolName] = useState('');
   const [textbookVersions, setTextbookVersions] = useState<SubjectTextbookVersion[]>([
-    { subject: 'math', version: '沪教版' }, // 上海默认
+    { subject: 'math', version: '沪教版' },
     { subject: 'chinese', version: '统编版' },
     { subject: 'english', version: '人教PEP版' },
   ]);
@@ -83,96 +84,92 @@ export default function NewChildPage() {
   };
 
   return (
-    <main className="mx-auto max-w-2xl px-4 py-6 sm:py-10">
+    <div className="max-w-2xl">
       <Link
         href="/children"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-slate-500 hover:text-slate-700"
       >
         <ArrowLeft className="h-4 w-4" />
         返回孩子列表
       </Link>
 
-      <h1 className="text-2xl font-bold text-gray-900">添加孩子</h1>
-      <p className="mt-1 text-sm text-gray-500">基础信息 + 教材版本 (数学必填)</p>
+      <PageHeader
+        icon={<Plus className="h-5 w-5" />}
+        title="添加孩子"
+        subtitle="基础信息 + 教材版本 (数学必填)"
+      />
 
-      <form onSubmit={handleSubmit} className="mt-6 space-y-5">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-            孩子名字 <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="name"
-            type="text"
-            required
-            maxLength={64}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100"
-            placeholder="如: 大宝 / 小宝"
-          />
-        </div>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <section className="rounded-2xl border border-slate-200 bg-white p-5">
+          <h2 className="mb-4 text-sm font-semibold text-slate-700">基础信息</h2>
 
-        <div>
-          <label htmlFor="grade" className="block text-sm font-medium text-gray-700">
-            年级 <span className="text-red-500">*</span>
-          </label>
-          <select
-            id="grade"
-            value={grade}
-            onChange={(e) => setGrade(Number(e.target.value))}
-            className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100"
-          >
-            {GRADES.map((g) => (
-              <option key={g} value={g}>
-                {g} 年级
-              </option>
-            ))}
-          </select>
-        </div>
+          <div className="space-y-4">
+            <Field label="孩子名字" required>
+              <input
+                type="text"
+                required
+                maxLength={64}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full rounded-xl border border-slate-200 px-3 py-2.5 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                placeholder="如: 大宝 / 小宝"
+              />
+            </Field>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label htmlFor="class" className="block text-sm font-medium text-gray-700">
-              班级 <span className="text-xs text-gray-400">(可选)</span>
-            </label>
-            <input
-              id="class"
-              type="text"
-              maxLength={64}
-              value={className}
-              onChange={(e) => setClassName(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100"
-              placeholder="如: 三(2)班"
-            />
+            <Field label="年级" required>
+              <select
+                value={grade}
+                onChange={(e) => setGrade(Number(e.target.value))}
+                className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+              >
+                {GRADES.map((g) => (
+                  <option key={g} value={g}>
+                    {g} 年级
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="班级" optional>
+                <input
+                  type="text"
+                  maxLength={64}
+                  value={className}
+                  onChange={(e) => setClassName(e.target.value)}
+                  className="w-full rounded-xl border border-slate-200 px-3 py-2.5 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                  placeholder="如: 三(2)班"
+                />
+              </Field>
+              <Field label="学校" optional>
+                <input
+                  type="text"
+                  maxLength={128}
+                  value={schoolName}
+                  onChange={(e) => setSchoolName(e.target.value)}
+                  className="w-full rounded-xl border border-slate-200 px-3 py-2.5 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
+                  placeholder="如: 上海市实验小学"
+                />
+              </Field>
+            </div>
           </div>
-          <div>
-            <label htmlFor="school" className="block text-sm font-medium text-gray-700">
-              学校 <span className="text-xs text-gray-400">(可选)</span>
-            </label>
-            <input
-              id="school"
-              type="text"
-              maxLength={128}
-              value={schoolName}
-              onChange={(e) => setSchoolName(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-100"
-              placeholder="如: 上海市实验小学"
-            />
-          </div>
-        </div>
+        </section>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            教材版本 <span className="text-xs text-gray-400">(数学必填, 其他学科可加可选)</span>
-          </label>
-          <div className="mt-2 space-y-2 rounded-lg border border-gray-200 bg-white p-3">
+        <section className="rounded-2xl border border-slate-200 bg-white p-5">
+          <div className="mb-3 flex items-center gap-2">
+            <BookOpen className="h-4 w-4 text-slate-500" />
+            <h2 className="text-sm font-semibold text-slate-700">教材版本</h2>
+          </div>
+          <p className="mb-3 text-xs text-slate-500">数学必填, 其他学科可选 · 上海默认沪教版数学</p>
+
+          <div className="space-y-2">
             {SUBJECTS.map(({ value, label }) => {
               const versions = TEXTBOOK_VERSIONS[value];
+              if (versions.length === 0) return null;
               const current = textbookVersions.find((t) => t.subject === value);
-              if (versions.length === 0) return null; // 没教材选项的学科不显示
               return (
-                <div key={value} className="flex items-center gap-3">
-                  <span className="w-16 text-sm text-gray-600">{label}</span>
+                <div key={value} className="flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2">
+                  <span className="w-16 text-sm text-slate-700">{label}</span>
                   <select
                     value={current?.version || ''}
                     onChange={(e) => {
@@ -182,7 +179,7 @@ export default function NewChildPage() {
                         removeSubject(value);
                       }
                     }}
-                    className="flex-1 rounded-lg border border-gray-300 bg-white px-2 py-1.5 text-sm outline-none focus:border-primary-500"
+                    className="flex-1 rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-sm outline-none focus:border-primary-400"
                   >
                     <option value="">— 不选 —</option>
                     {versions.map((v) => (
@@ -191,38 +188,59 @@ export default function NewChildPage() {
                       </option>
                     ))}
                   </select>
-                  {value === 'math' && (
-                    <span className="text-xs text-red-500">*</span>
-                  )}
+                  {value === 'math' && <span className="text-xs text-rose-500">*</span>}
                 </div>
               );
             })}
           </div>
-        </div>
+        </section>
 
         {error && (
-          <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+          <div className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5 text-sm text-rose-700">
             {error}
           </div>
         )}
 
-        <div className="flex gap-3">
+        <div className="flex gap-2">
           <button
             type="submit"
             disabled={loading}
-            className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary-500 py-2.5 font-medium text-white transition hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:shadow-md disabled:opacity-50"
           >
             <Save className="h-4 w-4" />
             {loading ? '保存中…' : '保存'}
           </button>
           <Link
             href="/children"
-            className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50"
           >
             取消
           </Link>
         </div>
       </form>
-    </main>
+    </div>
+  );
+}
+
+function Field({
+  label,
+  children,
+  required,
+  optional,
+}: {
+  label: string;
+  children: React.ReactNode;
+  required?: boolean;
+  optional?: boolean;
+}) {
+  return (
+    <div>
+      <label className="mb-1.5 block text-xs font-medium text-slate-700">
+        {label}{' '}
+        {required && <span className="text-rose-500">*</span>}
+        {optional && <span className="text-xs text-slate-400">(可选)</span>}
+      </label>
+      {children}
+    </div>
   );
 }

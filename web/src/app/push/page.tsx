@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   Bell,
@@ -15,6 +14,7 @@ import {
 import { authApi } from '@/lib/auth';
 import { pushApi, type PushPreference, type PushRecord, type LockStatus } from '@/lib/push';
 import { getErrorMessage } from '@/lib/api';
+import { PageHeader, Loading } from '@/components/NavBar';
 
 export default function PushPage() {
   const router = useRouter();
@@ -51,6 +51,7 @@ export default function PushPage() {
 
   useEffect(() => {
     refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   async function savePrefs(patch: Partial<PushPreference>) {
@@ -84,34 +85,27 @@ export default function PushPage() {
     }
   }
 
-  if (!prefs) {
-    return (
-      <main className="mx-auto max-w-3xl px-4 py-12">
-        <div className="text-center text-gray-500">加载中…</div>
-      </main>
-    );
-  }
+  if (!prefs) return <Loading label="加载推送设置…" />;
 
   const unreadCount = records.filter((r) => !r.opened_at).length;
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-6 sm:py-8">
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">🔔 推送 + 锁屏</h1>
-        <Link href="/dashboard" className="text-sm text-gray-500 hover:text-gray-700">
-          ← 返回
-        </Link>
-      </div>
+    <div>
+      <PageHeader
+        icon={<Bell className="h-5 w-5" />}
+        title="推送 + 锁屏"
+        subtitle="自动提醒 + 21 点锁屏保护眼睛"
+      />
 
       {error && (
-        <div className="mb-4 rounded-lg border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">
+        <div className="mb-4 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">
           {error}
         </div>
       )}
 
       {/* 锁屏状态条 */}
       {lock && lock.is_locked && (
-        <div className="mb-4 flex items-start gap-3 rounded-2xl border border-rose-300 bg-rose-50 p-4">
+        <div className="mb-4 flex items-start gap-3 rounded-2xl border-2 border-rose-300 bg-rose-50 p-4">
           <Moon className="mt-0.5 h-5 w-5 flex-shrink-0 text-rose-600" />
           <div className="flex-1">
             <p className="font-semibold text-rose-800">夜深了, 暂时锁屏</p>
@@ -122,20 +116,23 @@ export default function PushPage() {
 
       {/* 今日用量 */}
       {lock && (
-        <section className="mb-4 rounded-2xl border border-gray-200 bg-white p-4">
-          <div className="mb-2 flex items-center gap-2">
-            <Clock className="h-4 w-4 text-gray-500" />
-            <h2 className="text-sm font-semibold text-gray-700">今日学习时长</h2>
+        <section className="mb-4 rounded-2xl border border-slate-200 bg-white p-5">
+          <div className="mb-3 flex items-center gap-2">
+            <Clock className="h-4 w-4 text-slate-500" />
+            <h2 className="text-sm font-semibold text-slate-700">今日学习时长</h2>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-semibold text-gray-900">
-              {lock.used_minutes}
-            </span>
-            <span className="text-sm text-gray-500">/ {lock.limit_minutes} 分钟</span>
+            <span className="text-3xl font-bold text-slate-900">{lock.used_minutes}</span>
+            <span className="text-sm text-slate-500">/ {lock.limit_minutes} 分钟</span>
+            {lock.is_locked && (
+              <span className="ml-auto rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-medium text-rose-700">
+                已锁
+              </span>
+            )}
           </div>
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100">
+          <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100">
             <div
-              className={`h-full rounded-full ${
+              className={`h-full rounded-full transition-all ${
                 lock.used_minutes > lock.limit_minutes
                   ? 'bg-rose-500'
                   : lock.used_minutes > lock.limit_minutes * 0.7
@@ -149,13 +146,14 @@ export default function PushPage() {
       )}
 
       {/* 偏好设置 */}
-      <section className="mb-4 rounded-2xl border border-gray-200 bg-white p-4">
+      <section className="mb-4 rounded-2xl border border-slate-200 bg-white p-5">
         <div className="mb-3 flex items-center gap-2">
-          <Settings className="h-4 w-4 text-gray-500" />
-          <h2 className="text-sm font-semibold text-gray-700">偏好设置</h2>
+          <Settings className="h-4 w-4 text-slate-500" />
+          <h2 className="text-sm font-semibold text-slate-700">偏好设置</h2>
+          {saving && <span className="text-xs text-slate-400">保存中…</span>}
         </div>
 
-        <div className="space-y-3 text-sm">
+        <div className="space-y-4 text-sm">
           <Toggle
             label="接收推送"
             description="录错题 / 掌握时, 站内通知会出现在下方"
@@ -165,18 +163,18 @@ export default function PushPage() {
           />
 
           <div>
-            <label className="mb-1 block text-xs text-gray-500">推送时间</label>
+            <label className="mb-1.5 block text-xs text-slate-500">推送时间</label>
             <input
               type="time"
               value={prefs.push_time}
               onChange={(e) => savePrefs({ push_time: e.target.value })}
               disabled={saving}
-              className="rounded border-gray-300 px-2 py-1 text-sm"
+              className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-sm outline-none focus:border-primary-400"
             />
-            <p className="mt-1 text-xs text-gray-400">每天定时提醒 (MVP 当前仅 in-app, 不发邮件)</p>
+            <p className="mt-1 text-xs text-slate-400">每天定时提醒 (v0.2 当前仅 in-app, 不发邮件)</p>
           </div>
 
-          <div className="border-t border-gray-100 pt-3">
+          <div className="border-t border-slate-100 pt-4">
             <Toggle
               label="夜间锁屏"
               description={`${prefs.lock_time} 后, 超出每日时长则拒绝学习类操作`}
@@ -187,7 +185,7 @@ export default function PushPage() {
           </div>
 
           <div>
-            <label className="mb-1 block text-xs text-gray-500">每日学习上限 (分钟)</label>
+            <label className="mb-1.5 block text-xs text-slate-500">每日学习上限 (分钟)</label>
             <input
               type="number"
               min={5}
@@ -197,33 +195,33 @@ export default function PushPage() {
                 savePrefs({ daily_limit_minutes: parseInt(e.target.value, 10) || 30 })
               }
               disabled={saving}
-              className="w-20 rounded border-gray-300 px-2 py-1 text-sm"
+              className="w-24 rounded-lg border border-slate-200 px-2.5 py-1.5 text-sm outline-none focus:border-primary-400"
             />
-            <p className="mt-1 text-xs text-gray-400">5-180 分钟, 默认 30</p>
+            <p className="mt-1 text-xs text-slate-400">5-180 分钟, 默认 30</p>
           </div>
 
           <div>
-            <label className="mb-1 block text-xs text-gray-500">锁屏起始时间</label>
+            <label className="mb-1.5 block text-xs text-slate-500">锁屏起始时间</label>
             <input
               type="time"
               value={prefs.lock_time}
               onChange={(e) => savePrefs({ lock_time: e.target.value })}
               disabled={saving}
-              className="rounded border-gray-300 px-2 py-1 text-sm"
+              className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-sm outline-none focus:border-primary-400"
             />
-            <p className="mt-1 text-xs text-gray-400">默认 21:00, 锁屏判断: 当前时间 ≥ 此值 且 超时长</p>
+            <p className="mt-1 text-xs text-slate-400">默认 21:00, 锁屏判断: 当前时间 ≥ 此值 且 超时长</p>
           </div>
         </div>
       </section>
 
       {/* 通知列表 */}
-      <section className="rounded-2xl border border-gray-200 bg-white p-4">
+      <section className="rounded-2xl border border-slate-200 bg-white p-5">
         <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Bell className="h-4 w-4 text-gray-500" />
-            <h2 className="text-sm font-semibold text-gray-700">站内通知</h2>
+            <Bell className="h-4 w-4 text-slate-500" />
+            <h2 className="text-sm font-semibold text-slate-700">站内通知</h2>
             {unreadCount > 0 && (
-              <span className="rounded-full bg-rose-500 px-2 py-0.5 text-xs text-white">
+              <span className="rounded-full bg-rose-500 px-2 py-0.5 text-xs font-medium text-white">
                 {unreadCount} 未读
               </span>
             )}
@@ -232,7 +230,7 @@ export default function PushPage() {
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value as 'all' | 'unread')}
-              className="rounded border-gray-300 text-xs"
+              className="rounded-lg border border-slate-200 px-2 py-1 text-xs outline-none focus:border-primary-400"
             >
               <option value="all">全部</option>
               <option value="unread">未读</option>
@@ -240,7 +238,7 @@ export default function PushPage() {
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50"
+                className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1 text-xs text-slate-600 hover:bg-slate-50"
               >
                 <CheckCheck className="h-3 w-3" />
                 全部已读
@@ -250,7 +248,7 @@ export default function PushPage() {
         </div>
 
         {records.length === 0 ? (
-          <div className="py-8 text-center text-sm text-gray-400">
+          <div className="py-8 text-center text-sm text-slate-400">
             {filter === 'unread' ? '没有未读通知' : '还没有通知'}
           </div>
         ) : (
@@ -258,15 +256,13 @@ export default function PushPage() {
             {records.map((r) => (
               <li
                 key={r.id}
-                className={`flex items-start gap-2 rounded-lg border p-3 ${
-                  r.opened_at
-                    ? 'border-gray-100 bg-gray-50'
-                    : 'border-blue-200 bg-blue-50'
+                className={`flex items-start gap-2 rounded-xl border p-3 transition ${
+                  r.opened_at ? 'border-slate-100 bg-slate-50' : 'border-primary-200 bg-primary-50'
                 }`}
               >
                 <div className="flex-1">
-                  <p className="text-sm text-gray-800">{r.content_summary}</p>
-                  <p className="mt-1 text-xs text-gray-400">
+                  <p className="text-sm text-slate-800">{r.content_summary}</p>
+                  <p className="mt-1 text-xs text-slate-400">
                     {new Date(r.sent_at).toLocaleString('zh-CN')} ·{' '}
                     {r.push_type === 'alert' ? '提醒' : r.push_type}
                   </p>
@@ -274,7 +270,7 @@ export default function PushPage() {
                 {!r.opened_at && (
                   <button
                     onClick={() => handleMarkOne(r.id)}
-                    className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                    className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
                     title="标为已读"
                   >
                     <CheckCircle2 className="h-4 w-4" />
@@ -285,7 +281,7 @@ export default function PushPage() {
           </ul>
         )}
       </section>
-    </main>
+    </div>
   );
 }
 
@@ -303,21 +299,21 @@ function Toggle({
   disabled?: boolean;
 }) {
   return (
-    <div className="flex items-start justify-between">
+    <div className="flex items-start justify-between gap-4">
       <div className="flex-1">
-        <p className="font-medium text-gray-800">{label}</p>
-        {description && <p className="text-xs text-gray-500">{description}</p>}
+        <p className="font-medium text-slate-800">{label}</p>
+        {description && <p className="mt-0.5 text-xs text-slate-500">{description}</p>}
       </div>
       <button
         type="button"
         onClick={() => onChange(!checked)}
         disabled={disabled}
-        className={`relative h-6 w-11 rounded-full transition ${
-          checked ? 'bg-blue-600' : 'bg-gray-300'
+        className={`relative h-6 w-11 flex-shrink-0 rounded-full transition ${
+          checked ? 'bg-primary-600' : 'bg-slate-300'
         } ${disabled ? 'opacity-50' : ''}`}
       >
         <span
-          className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white transition ${
+          className={`absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition ${
             checked ? 'translate-x-5' : 'translate-x-0'
           }`}
         />
