@@ -1,146 +1,77 @@
-# 学迹 (Xueji) · 上海小学生学习辅助
+# 学迹 (Xueji) · 自主学习辅助
 
-> **v0.2 · 2026-07-30 重写**
-> 状态: **阶段 1 进行中**
+> 上海小学生学习辅助 Web 平台 · 自用 + 朋友体验期
+> v0.2 全模块完成（错题本 / 学情档案 / 知识图谱 / 教材同步 / 推送+锁屏）
 
-给上海小学生家长 + 孩子用的学习辅助 Web 网站。不重复造内容, 把 basic.sh.smartedu.cn
-现有免费资源用好用透, 加上孩子自己的学情画像 + 错题本 + 知识图谱。
+---
 
-## 目录结构
-
-```
-sh-smartedu/
-├── README.md               ← 你正在看
-├── docs/                   ← 设计文档 (v0.2 方案)
-│   ├── 01-家长孩子真痛点.md
-│   ├── 02-产品设计.md
-│   ├── 03-技术方案.md
-│   ├── 04-数据模型.md
-│   ├── 05-落地计划.md
-│   └── 06-自查与待办.md
-├── backend/                ← Python FastAPI 后端
-│   ├── app/
-│   │   ├── api/            ← 路由 (auth/child/error/knowledge/curriculum/push)
-│   │   ├── core/           ← 配置/数据库/安全
-│   │   ├── models/         ← 9 个 ORM 模型
-│   │   └── main.py
-│   ├── scripts/seed_data.py ← 教研数据导入
-│   ├── requirements.txt
-│   ├── alembic.ini
-│   └── .env.example
-├── web/                    ← Next.js 前端
-│   ├── src/
-│   │   ├── app/            ← App Router (首页已写)
-│   │   └── ...
-│   ├── package.json
-│   ├── next.config.js
-│   └── tailwind.config.js
-├── data/                   ← 教研数据 (只读)
-│   ├── knowledge/          ← 知识图谱 (math_g3.yaml 已写)
-│   └── curriculum/         ← 教材改版 (2024_2026_changes.yaml 已写)
-└── scripts/
-```
-
-## 快速开始 (本地开发)
-
-### 准备
+## 🚀 5 分钟上手（开发者）
 
 ```bash
-# 1. 安装 PostgreSQL 14+ (macOS)
-brew install postgresql@14
-brew services start postgresql@14
+# 1. 装环境
+./scripts/setup.sh
 
-# 创建数据库和用户
-createuser -s xueji
-createdb -O xueji xueji
+# 2. 启动（后端 :8000 + 前端 :3000）
+./scripts/setup.sh start
 
-# 2. 安装 Python 依赖
-cd backend
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-
-# 3. 安装 Node 依赖
-cd ../web
-npm install  # 或 pnpm install
+# 3. 跑公网（让朋友也能用）
+./scripts/deploy/local-tunnel.sh start
+# → 会输出类似 https://xxx.trycloudflare.com 的 URL，发给朋友即可
 ```
 
-### 启动
+**目录**:
+- `backend/` — FastAPI + SQLAlchemy + PG 18
+- `web/` — Next.js 14 + TS + Tailwind
+- `data/` — 教研 YAML（数学 G3 知识图谱 + 2024-2026 改版）
+- `docs/` — 6 份 v0.2 设计 + 自查文档
+- `scripts/` — 启动 + 部署脚本
+- `FRIENDS_GUIDE.md` — **给朋友看**的使用指南
 
-```bash
-# 终端 1: 启动后端
-cd backend
-cp .env.example .env
-# 编辑 .env 至少确认 DATABASE_URL
-uvicorn app.main:app --reload --port 8000
+---
 
-# 终端 2: 启动前端
-cd web
-cp .env.example .env.local
-npm run dev
-```
+## 🎯 5 大模块
 
-访问:
-- **前端**: http://localhost:3000
-- **后端 API**: http://localhost:8000/api
-- **后端文档**: http://localhost:8000/docs
+1. **教材同步** (`/curriculum`) — 2024-2026 改了什么 + 本周要学
+2. **学情档案** (`/dashboard`) — 4 学科掌握度 + 30d 热力图 + 上周周报
+3. **错题本** (`/errors`) — 录错题 + 7 类归因 + 间隔重复复习
+4. **知识图谱** (`/knowledge`) — 50 节点 SVG 树状图
+5. **推送+锁屏** (`/push`) — 21 点锁屏 + 学习时长 + 站内通知
 
-### 导入教研数据(阶段 1 后期)
+---
 
-```bash
-cd backend
-# 确保 backend/.env 中有 DATABASE_URL
-python scripts/seed_data.py
-# 会导入 data/knowledge/*.yaml 和 data/curriculum/*.yaml
-```
+## 🔒 严格不做（v0.2 红线）
 
-## 阶段进度
+❌ 付费内容 ❌ 拍照给答案 ❌ AI 讲题 ❌ 校外培训
+❌ 社交/PK/排名 ❌ 广告 ❌ 奥数竞赛 ❌ 硬件
+❌ 融资 BP ❌ 营销裂变 ❌ 自建模型 ❌ 微服务
+❌ K8s ❌ 等保三级
 
-| 阶段 | 目标 | 状态 |
+---
+
+## 📚 文档
+
+| 文档 | 作用 |
+|------|------|
+| `docs/01-目标与边界.md` | MVP 范围 + 严格不做清单 |
+| `docs/02-架构与数据模型.md` | 技术栈 + 9 个 ORM 表 |
+| `docs/03-API设计.md` | 30+ 接口 |
+| `docs/04-前端设计.md` | 8 个页面 + 状态机 |
+| `docs/05-阶段计划.md` | 7 阶段里程碑 |
+| `docs/06-自查与待办.md` | **当前进度**（v0.2 100%） |
+| `FRIENDS_GUIDE.md` | **给朋友看** |
+
+---
+
+## 🌐 部署
+
+| 方案 | 成本 | 适合 |
 |------|------|------|
-| **1 · 准备** | 环境 + 教研数据 | 🚧 进行中 |
-| 2 · 骨架 | 微信登录 + 家庭/孩子管理 | ⏳ |
-| 3 · 错题本 | 拍照 → 入库 → 复习 | ⏳ |
-| 4 · 学情档案 | 仪表盘 + 周报 | ⏳ |
-| 5 · 知识图谱 | 可视化 | ⏳ |
-| 6 · 推送 + 锁屏 | 增值功能 | ⏳ |
-| 7 · 公网部署 | 真实可用 | ⏳ |
+| **C · 本地 + Tunnel** (当前) | ¥0 | MVP 体验期 |
+| **A · FC + RDS + OSS** | ~¥30-50/月 | 正式上线 |
+| **B · 轻量应用服务器** | ~¥60-100/月 | 单机全包 |
 
-## 阶段 1 已完成
+---
 
-- ✅ 项目结构(backend/ + web/ + data/)
-- ✅ 后端: 6 个 API 占位 + 9 个 ORM 模型 + 配置 + 安全
-- ✅ 前端: Next.js 14 + TS + Tailwind 脚手架 + 首页
-- ✅ 教研数据: 三年级数学知识图谱(50+ 节点) + 2024-2026 教材改版数据
-- ✅ 教研数据导入脚本(seed_data.py)
-- ✅ 环境配置示例(.env.example)
-- ✅ Git ignore
+## 📜 License
 
-## 阶段 1 待办(需要石头配合)
-
-- [ ] 找 1 个上海本地小学数学老师协助 review 知识图谱
-- [ ] 校对 2024-2026 教材改版数据(verified=false 的部分)
-- [ ] 决定: 是否建 Git 私有仓库
-- [ ] 注册/准备: 阿里云账号、微信开放平台、智谱 AI API key
-- [ ] 校对 basic.sh.smartedu.cn 微课视频链接(50+ 节点需要)
-
-## 关键资源
-
-- **设计文档**: `docs/` 目录, v0.2 完整方案
-- **目标模式提示词**: 见对话历史
-- **任务列表**: 通过 todowrite 跟踪
-
-## 沟通约定
-
-- 我(AI)做的所有改动会写 commit message
-- 任何"必须问才能定"的事我会停下来问
-- 任何超 100 元支出我会立刻停
-
-## 致谢
-
-调研参考:
-- [国家中小学智慧教育平台](https://basic.smartedu.cn/)
-- [上海中小学智慧教育平台·微校](https://basic.sh.smartedu.cn/)
-- [上海空中课堂指南](http://sh.bendibao.com/news/2020220/217192.shtm)
-- 2024-2026 教材改版相关搜狐/今日头条报道
-- 鲸爱练、七天网络、人教智能教辅等行业产品
+仅限石头自家 + 朋友家使用，不开源、不商用、不做 SaaS。
