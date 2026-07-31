@@ -180,14 +180,15 @@ async def create_error(
         source=payload.source,
         source_note=chosen_source_note,
         status="new",
-        next_review_at=None,  # 第一次入册, 不强制今天复习
+        # 艾宾浩斯: 第一次 4 小时后复习, 趁热打铁
+        next_review_at=datetime.now(timezone.utc) + timedelta(hours=4),
         review_count=0,
     )
     db.add(item)
     await db.commit()
     await db.refresh(item)
     logger.info(
-        f"error created: {item.id} (child={child_id}, et={chosen_et}, suggest={et} via {source_tag})"
+        f"error created: {item.id} (child={child_id}, et={chosen_et}, suggest={et} via {source_tag}, next_review=+4h)"
     )
     return _to_response(item)
 

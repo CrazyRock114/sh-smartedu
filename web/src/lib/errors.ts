@@ -8,6 +8,7 @@ import type {
   ErrorItemListItem,
   ErrorItemUpdate,
   ErrorStats,
+  OcrExtractResponse,
   ReviewQueueItem,
   SuggestRequest,
   SuggestResponse,
@@ -101,6 +102,17 @@ export const errorsApi = {
   // 归因建议 (录入前调用, 不写库)
   async suggest(data: SuggestRequest): Promise<SuggestResponse> {
     const resp = await api.post<SuccessResponse<SuggestResponse>>('/errors/suggest-type', data);
+    return resp.data.data;
+  },
+
+  // 拍照 OCR 识题 (GLM-4V, 需要后端配 ZHIPUAI_API_KEY)
+  async ocrExtract(image: File, subject?: string): Promise<OcrExtractResponse> {
+    const fd = new FormData();
+    fd.append('image', image);
+    if (subject) fd.append('subject', subject);
+    const resp = await api.post<SuccessResponse<OcrExtractResponse>>('/errors/ocr', fd, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return resp.data.data;
   },
 };

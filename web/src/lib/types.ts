@@ -232,6 +232,15 @@ export interface SuggestResponse {
   labels: Record<string, string>;
 }
 
+export interface OcrExtractResponse {
+  question_text: string;
+  student_answer: string;
+  error_type: ErrorType;
+  reason: string;
+  source: 'glm-4v';
+  labels: Record<string, string>;
+}
+
 export const ERROR_STATUS_LABELS: Record<ErrorItem['status'], string> = {
   new: '待复习',
   reviewing: '复习中',

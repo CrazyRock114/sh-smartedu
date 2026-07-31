@@ -159,6 +159,7 @@ __all__ = [
     "ErrorStats",
     "SuggestRequest",
     "SuggestResponse",
+    "OcrExtractResponse",
 ]
 
 
@@ -178,4 +179,17 @@ class SuggestResponse(BaseModel):
     labels: dict[str, str] = Field(
         default_factory=dict,
         description="错因中文标签映射, 方便前端直接展示",
+    )
+
+
+class OcrExtractResponse(BaseModel):
+    """拍照 OCR 识别结果 (GLM-4V 多模态)"""
+    question_text: str = Field(default="", description="从图中读出的题目原文")
+    student_answer: str = Field(default="", description="从图中识别的学生答案")
+    error_type: str = Field(description="AI 推断的错因 (7 类之一)")
+    reason: str = Field(default="", description="AI 推断理由")
+    source: str = Field(description="glm-4v")
+    labels: dict[str, str] = Field(
+        default_factory=dict,
+        description="错因中文标签映射",
     )

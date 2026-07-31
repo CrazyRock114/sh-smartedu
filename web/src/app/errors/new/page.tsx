@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ArrowLeft, Sparkles, Loader2, Camera, Plus } from 'lucide-react';
+import { ArrowLeft, Sparkles, Loader2, Camera, Plus, ImageIcon, X, CheckCircle2, AlertCircle } from 'lucide-react';
 import { authApi } from '@/lib/auth';
 import { childrenApi } from '@/lib/children';
 import { errorsApi } from '@/lib/errors';
@@ -13,6 +13,7 @@ import {
   SUBJECT_LABELS,
   type Child,
   type ErrorType,
+  type OcrExtractResponse,
   type SuggestResponse,
 } from '@/lib/types';
 import { getErrorMessage } from '@/lib/api';
@@ -44,6 +45,13 @@ export default function NewErrorPage() {
   const [suggesting, setSuggesting] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // 拍照 OCR
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [ocrLoading, setOcrLoading] = useState(false);
+  const [ocrResult, setOcrResult] = useState<OcrExtractResponse | null>(null);
 
   useEffect(() => {
     if (!authApi.isLoggedIn()) {
@@ -81,6 +89,54 @@ export default function NewErrorPage() {
     }
   };
 
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    setPhotoFile(f);
+    setError(null);
+    setOcrResult(null);
+    const reader = new FileReader();
+    reader.onload = () => setPhotoPreview(reader.result as string);
+    reader.readAsDataURL(f);
+  };
+
+  const handleClearPhoto = () => {
+    setPhotoFile(null);
+    setPhotoPreview(null);
+    setOcrResult(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleOcr = async () => {
+    if (!photoFile) return;
+    setError(null);
+    setOcrLoading(true);
+    try {
+      const r = await errorsApi.ocrExtract(photoFile, subject);
+      setOcrResult(r);
+      // 自动填入 OCR 识别的字段 (家长可改)
+      if (r.question_text) setQuestionText(r.question_text);
+      if (r.student_answer) setStudentAnswer(r.student_answer);
+      setErrorType(r.error_type);
+      setSuggestion({
+        error_type: r.error_type,
+        reason: r.reason,
+        source: 'glm',
+        labels: r.labels,
+      });
+    } catch (e: any) {
+      const msg = getErrorMessage(e);
+      const status = e?.response?.status;
+      if (status === 503) {
+        setError('拍照识别需要后端配 ZHIPUAI_API_KEY (智谱 GLM-4V)。当前未配, 请手动录入。');
+      } else {
+        setError(`拍照识别失败: ${msg}`);
+      }
+    } finally {
+      setOcrLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!childId) {
@@ -101,7 +157,7 @@ export default function NewErrorPage() {
         student_answer: studentAnswer,
         error_note: errorNote || undefined,
         error_type: errorType,
-        source: 'manual',
+        source: ocrResult ? 'ocr' : 'manual',
       });
       router.push(`/errors/${item.id}?child_id=${childId}`);
     } catch (e) {
@@ -211,9 +267,73 @@ export default function NewErrorPage() {
               />
             </Field>
           </div>
-          <div className="mt-3 flex items-start gap-2 rounded-lg bg-blue-50 p-2.5 text-xs text-blue-700">
-            <Camera className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
-            <span>v0.2 当前为手动录入 · 拍照 OCR 将在 v0.3 接入 (需阿里云 OCR key)</span>
+
+          {/* 拍照 OCR 一键识别 (GLM-4V, 需 ZHIPUAI_API_KEY) */}
+          <div className="mt-3 rounded-xl border border-dashed border-primary-200 bg-gradient-to-br from-primary-50/50 to-amber-50/30 p-3">
+            <div className="mb-2 flex items-center gap-1.5 text-xs font-medium text-primary-700">
+              <Camera className="h-3.5 w-3.5" />
+              <span>📸 拍照 OCR (5 秒入库) — 后端需配 ZHIPUAI_API_KEY</span>
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              capture="environment"
+              onChange={handlePhotoChange}
+              className="hidden"
+            />
+            {!photoPreview ? (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary-200 bg-white py-2.5 text-sm font-medium text-primary-700 transition hover:border-primary-300 hover:bg-primary-50"
+              >
+                <ImageIcon className="h-4 w-4" />
+                选 / 拍 错题照片
+              </button>
+            ) : (
+              <div className="space-y-2">
+                <div className="relative">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={photoPreview}
+                    alt="错题照片预览"
+                    className="max-h-48 w-full rounded-lg border border-slate-200 object-contain"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleClearPhoto}
+                    className="absolute right-2 top-2 rounded-full bg-slate-900/70 p-1 text-white hover:bg-slate-900"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleOcr}
+                  disabled={ocrLoading}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary-500 to-primary-600 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:shadow-md disabled:opacity-50"
+                >
+                  {ocrLoading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      AI 看图中…
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="h-4 w-4" />
+                      一键识别 (题目+答案+错因)
+                    </>
+                  )}
+                </button>
+                {ocrResult && (
+                  <div className="flex items-start gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 p-2 text-xs text-emerald-700">
+                    <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" />
+                    <span>已自动填入题目/学生答案, 错因建议: <strong>{ERROR_TYPE_LABELS[ocrResult.error_type]}</strong>。请在下方核对 + 填正确答案。</span>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </Card>
 
