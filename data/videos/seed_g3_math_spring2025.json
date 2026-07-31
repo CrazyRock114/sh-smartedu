@@ -1,0 +1,148 @@
+{
+  "version": "1.0",
+  "updated_at": "2026-07-31",
+  "note": "沪教版三年级数学第二学期 (2025春) 空中课堂微课索引。",
+  "source": "https://basic.sh.smartedu.cn/airclassroom/",
+  "videos": [
+    {
+      "grade": 3, "subject": "math", "version": "沪教版", "semester": "2025-spring",
+      "chapter": "第一章·复习与提高", "episode": "小复习 (加减乘除)",
+      "week_index": 1, "importance": 4,
+      "knowledge_point_codes": ["MATH-G3-C10-K001"],
+      "description": "上学期加减乘除综合复习, 为新学期打基础。",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=%E5%B0%8F%E5%A4%8D%E4%B9%A0",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "verified": false
+    },
+    {
+      "grade": 3, "subject": "math", "version": "沪教版", "semester": "2025-spring",
+      "chapter": "第二章·用两位数乘除", "episode": "两位数乘两位数 (不进位)",
+      "week_index": 3, "importance": 5,
+      "knowledge_point_codes": ["MATH-G3-C11-K001"],
+      "description": "两位数乘两位数, 不含进位。基础笔算。",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=%E4%B8%A4%E4%BD%8D%E6%95%B0%E4%B9%98%E4%B8%A4%E4%BD%8D%E6%95%B0",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "verified": false
+    },
+    {
+      "grade": 3, "subject": "math", "version": "沪教版", "semester": "2025-spring",
+      "chapter": "第二章·用两位数乘除", "episode": "两位数乘两位数 (含进位)",
+      "week_index": 4, "importance": 5,
+      "knowledge_point_codes": ["MATH-G3-C11-K002"],
+      "description": "两位数乘两位数, 含进位。期末必考。",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=%E4%B8%A4%E4%BD%8D%E6%95%B0%E4%B9%98%E4%B8%A4%E4%BD%8D%E6%95%B0%E8%BF%9B%E4%BD%8D",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "verified": false
+    },
+    {
+      "grade": 3, "subject": "math", "version": "沪教版", "semester": "2025-spring",
+      "chapter": "第二章·用两位数乘除", "episode": "两位数除以两位数 (试商)",
+      "week_index": 6, "importance": 5,
+      "knowledge_point_codes": ["MATH-G3-C11-K003"],
+      "description": "两位数除两位数, 试商调商。期末必考, 难点。",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=%E4%B8%A4%E4%BD%8D%E6%95%B0%E9%99%A4%E4%B8%A4%E4%BD%8D%E6%95%B0",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "verified": false
+    },
+    {
+      "grade": 3, "subject": "math", "version": "沪教版", "semester": "2025-spring",
+      "chapter": "第二章·用两位数乘除", "episode": "解决问题 (乘除两步)",
+      "week_index": 7, "importance": 4,
+      "knowledge_point_codes": ["MATH-G3-C11-K004"],
+      "description": "乘除两步解决实际问题, 期末必考。",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=%E4%B9%98%E9%99%A4%E4%B8%A4%E6%AD%A5",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "verified": false
+    },
+    {
+      "grade": 3, "subject": "math", "version": "沪教版", "semester": "2025-spring",
+      "chapter": "第三章·统计", "episode": "条形统计图 (一格代表 2)",
+      "week_index": 9, "importance": 4,
+      "knowledge_point_codes": ["MATH-G3-C12-K001"],
+      "description": "用一格代表 2 个单位画条形统计图, 会读图。",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=%E6%9D%A1%E5%BD%A2%E7%BB%9F%E8%AE%A1%E5%9B%BE",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "verified": false
+    },
+    {
+      "grade": 3, "subject": "math", "version": "沪教版", "semester": "2025-spring",
+      "chapter": "第三章·统计", "episode": "条形统计图 (一格代表 5)",
+      "week_index": 10, "importance": 3,
+      "knowledge_point_codes": ["MATH-G3-C12-K002"],
+      "description": "用一格代表 5 个单位画条形统计图。",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=%E6%9D%A1%E5%BD%A2%E7%BB%9F%E8%AE%A1%E5%9B%BE5",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "verified": false
+    },
+    {
+      "grade": 3, "subject": "math", "version": "沪教版", "semester": "2025-spring",
+      "chapter": "第四章·分数的初步认识", "episode": "几分之一 (再认识)",
+      "week_index": 12, "importance": 5,
+      "knowledge_point_codes": ["MATH-G3-C13-K001"],
+      "description": "几分之一的再认识, 读写分数。期末必考。",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=%E5%87%A0%E5%88%86%E4%B9%8B%E4%B8%80",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "verified": false
+    },
+    {
+      "grade": 3, "subject": "math", "version": "沪教版", "semester": "2025-spring",
+      "chapter": "第四章·分数的初步认识", "episode": "几分之几 (再认识)",
+      "week_index": 13, "importance": 5,
+      "knowledge_point_codes": ["MATH-G3-C13-K002"],
+      "description": "几分之几的再认识, 比较同分母分数大小。期末必考。",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=%E5%87%A0%E5%88%86%E4%B9%8B%E5%87%A0",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "verified": false
+    },
+    {
+      "grade": 3, "subject": "math", "version": "沪教版", "semester": "2025-spring",
+      "chapter": "第四章·分数的初步认识", "episode": "同分母分数加减法",
+      "week_index": 14, "importance": 5,
+      "knowledge_point_codes": ["MATH-G3-C13-K003"],
+      "description": "同分母分数加减法。期末必考。",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=%E5%90%8C%E5%88%86%E6%AF%8D%E5%88%86%E6%95%B0",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "verified": false
+    },
+    {
+      "grade": 3, "subject": "math", "version": "沪教版", "semester": "2025-spring",
+      "chapter": "第五章·计算器", "episode": "计算器的认识与使用",
+      "week_index": 15, "importance": 3,
+      "knowledge_point_codes": ["MATH-G3-C14-K001"],
+      "description": "认识计算器, 会用 + - × ÷ 进行简单运算。",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=%E8%AE%A1%E7%AE%97%E5%99%A8",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "verified": false
+    },
+    {
+      "grade": 3, "subject": "math", "version": "沪教版", "semester": "2025-spring",
+      "chapter": "第六章·几何小实践", "episode": "周长与面积 (长方形)",
+      "week_index": 16, "importance": 4,
+      "knowledge_point_codes": ["MATH-G3-C15-K001"],
+      "description": "长方形周长与面积的区别。期末必考。",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=%E5%91%A8%E9%95%BF%E9%9D%A2%E7%A7%AF",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "verified": false
+    },
+    {
+      "grade": 3, "subject": "math", "version": "沪教版", "semester": "2025-spring",
+      "chapter": "第六章·几何小实践", "episode": "面积单位 (平方厘米/分米/米)",
+      "week_index": 17, "importance": 4,
+      "knowledge_point_codes": ["MATH-G3-C15-K002"],
+      "description": "认识面积单位, 平方厘米 / 平方分米 / 平方米。",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=%E9%9D%A2%E7%A7%AF%E5%8D%95%E4%BD%8D",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "verified": false
+    },
+    {
+      "grade": 3, "subject": "math", "version": "沪教版", "semester": "2025-spring",
+      "chapter": "第七章·整理与提高", "episode": "总复习 (数与运算)",
+      "week_index": 18, "importance": 5,
+      "knowledge_point_codes": ["MATH-G3-C16-K001"],
+      "description": "全册数与运算总复习, 期末冲刺。",
+      "search_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom?keyword=%E6%80%BB%E5%A4%8D%E4%B9%A0",
+      "chapter_listing_url": "https://basic.sh.smartedu.cn/airclassroom/airClassRoom",
+      "verified": false
+    }
+  ]
+}
