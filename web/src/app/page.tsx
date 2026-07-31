@@ -16,6 +16,7 @@ import {
   Shield,
   Zap,
   Target,
+  Gift,
 } from 'lucide-react';
 import { authApi } from '@/lib/auth';
 
@@ -161,6 +162,15 @@ export default function HomePage() {
                 <QuickLink g={5} s="chinese" v="统编版" sem="2025-fall" label="G5 语文" />
                 <span className="mx-1 text-slate-300">|</span>
                 <QuickLink g={4} s="english" v="人教PEP版" sem="2025-fall" label="G4 英语" />
+              </div>
+              <div className="mt-3 text-center">
+                <Link
+                  href="/friends-guide"
+                  className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 transition hover:border-emerald-300 hover:bg-emerald-100"
+                >
+                  <Gift className="h-3 w-3" />
+                  邀请朋友家 (3 个邀请码 + 微信话术)
+                </Link>
               </div>
             </div>
           )}

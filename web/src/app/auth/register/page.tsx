@@ -1,22 +1,29 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { authApi } from '@/lib/auth';
 import { getErrorMessage } from '@/lib/api';
-import { UserPlus, Eye, EyeOff, GraduationCap, Sparkles, Check } from 'lucide-react';
+import { UserPlus, Eye, EyeOff, GraduationCap, Sparkles, Check, Gift } from 'lucide-react';
 
 export default function RegisterPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  // URL 预填邀请码, 朋友家点 /auth/register?code=lily-2026 不用手抄
+  const urlCode = searchParams.get('code') || '';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [nickname, setNickname] = useState('');
-  const [inviteCode, setInviteCode] = useState('');
+  const [inviteCode, setInviteCode] = useState(urlCode);
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (urlCode) setInviteCode(urlCode);
+  }, [urlCode]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -174,19 +181,25 @@ export default function RegisterPage() {
               />
             </div>
 
-            <div>
-              <label htmlFor="invite" className="block text-sm font-medium text-slate-700">
-                邀请码 <span className="text-xs text-slate-400">(开放注册可留空)</span>
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-3">
+              <label htmlFor="invite" className="mb-1 flex items-center gap-1.5 text-sm font-semibold text-amber-800">
+                <Gift className="h-3.5 w-3.5" />
+                邀请码 <span className="text-rose-500">*</span>
+                <span className="text-xs font-normal text-amber-700">(必填, 朋友家限定)</span>
               </label>
               <input
                 id="invite"
                 type="text"
+                required
                 maxLength={32}
                 value={inviteCode}
                 onChange={(e) => setInviteCode(e.target.value)}
-                className="mt-1.5 w-full rounded-xl border border-slate-200 px-3 py-2.5 outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100"
-                placeholder="向石头要"
+                className="w-full rounded-lg border border-amber-300 bg-white px-3 py-2.5 font-mono text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200"
+                placeholder="lily-2026 / mike-2026 / wang-2026"
               />
+              <p className="mt-1.5 text-[11px] text-amber-700">
+                没邀请码请向石头要 · 3 户朋友家限定, 不对外开放
+              </p>
             </div>
 
             {error && (
