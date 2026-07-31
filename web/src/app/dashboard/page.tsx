@@ -16,11 +16,15 @@ import {
   LayoutDashboard,
   Flame,
   Trophy,
+  Clock,
+  ListTodo,
 } from 'lucide-react';
 import { authApi } from '@/lib/auth';
 import { childrenApi } from '@/lib/children';
 import { analyticsApi, type DashboardData, type HeatmapData } from '@/lib/analytics';
-import type { Child, CurrentUser, WeeklyReportResponse } from '@/lib/types';
+import { errorsApi } from '@/lib/errors';
+import { curriculumApi } from '@/lib/curriculum';
+import type { Child, CurrentUser, ReviewQueueItem, WeeklyReportResponse } from '@/lib/types';
 import { getErrorMessage } from '@/lib/api';
 import { PageHeader, Loading, EmptyState } from '@/components/NavBar';
 
@@ -53,6 +57,7 @@ export default function DashboardPage() {
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
   const [heatmap, setHeatmap] = useState<HeatmapData | null>(null);
   const [report, setReport] = useState<WeeklyReportResponse | null>(null);
+  const [todayReviews, setTodayReviews] = useState<ReviewQueueItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -77,11 +82,13 @@ export default function DashboardPage() {
       analyticsApi.dashboard(childId),
       analyticsApi.heatmap(childId, 30),
       analyticsApi.weeklyReport(childId),
+      errorsApi.reviewQueue(childId, 5),
     ])
-      .then(([d, h, r]) => {
+      .then(([d, h, r, q]) => {
         setDashboard(d);
         setHeatmap(h);
         setReport(r);
+        setTodayReviews(q);
         setLoading(false);
       })
       .catch((err) => {
@@ -183,6 +190,12 @@ export default function DashboardPage() {
               color="bg-blue-50 text-blue-700"
             />
           </div>
+
+          {/* 今日待办 (家长打开就知道今天该做什么) */}
+          <TodayTodoPanel
+            reviews={todayReviews}
+            childId={childId}
+          />
 
           {/* 学科掌握度 */}
           <section className="mb-6">
@@ -521,3 +534,87 @@ function Heatmap({ cells, max }: { cells: { date: string; total: number; by_subj
     </div>
   );
 }
+
+// === 今日待办面板 (W3 家长视角核心) ===
+function TodayTodoPanel({ reviews, childId }: { reviews: ReviewQueueItem[]; childId: string }) {
+  const dueReviews = reviews.filter((r) => r.is_overdue || r.next_review_at === null);
+  const totalMin = dueReviews.length * 2; // 粗估每题 2 分钟
+
+  return (
+    <section className="mb-6 overflow-hidden rounded-2xl border border-primary-200 bg-gradient-to-br from-primary-50 via-white to-amber-50 p-5 shadow-sm">
+      <div className="mb-3 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-sm">
+            <ListTodo className="h-4 w-4" />
+          </div>
+          <div>
+            <h2 className="text-base font-bold text-slate-900">今日待办</h2>
+            <p className="text-xs text-slate-500">
+              {dueReviews.length > 0
+                ? `${dueReviews.length} 道错题待复习 · 约 ${totalMin} 分钟`
+                : '今天没有待复习, 轻松一天 ✨'}
+            </p>
+          </div>
+        </div>
+        <span className="rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-semibold text-primary-700">
+          {new Date().toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', weekday: 'short' })}
+        </span>
+      </div>
+
+      {dueReviews.length > 0 ? (
+        <ul className="space-y-2">
+          {dueReviews.slice(0, 5).map((r) => (
+            <li key={r.id}>
+              <Link
+                href={`/errors/${r.id}?child_id=${childId}`}
+                className="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-md"
+              >
+                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-rose-100 to-rose-200 text-rose-700">
+                  <AlertCircle className="h-4 w-4" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold text-slate-800 group-hover:text-primary-700">
+                    {r.question_text.slice(0, 40)}
+                    {r.question_text.length > 40 ? '…' : ''}
+                  </p>
+                  <p className="mt-0.5 line-clamp-1 text-xs text-slate-500">
+                    {SUBJECT_LABELS_R[r.subject] || r.subject} · {ERROR_TYPE_LABELS[r.error_type] || r.error_type} · 答对 {r.review_count} 次
+                  </p>
+                </div>
+                <ArrowRight className="h-4 w-4 flex-shrink-0 text-slate-400 group-hover:text-primary-600" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-700">
+          <CheckCircle2 className="mr-1 inline h-3.5 w-3.5" />
+          今日已无错题复习任务。可以去看几节本周微课, 或者休息一下。
+        </div>
+      )}
+
+      <div className="mt-3 flex gap-2">
+        <Link
+          href={`/errors?child_id=${childId}`}
+          className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-center text-xs font-medium text-slate-600 transition hover:border-primary-300 hover:text-primary-700"
+        >
+          全部错题
+        </Link>
+        <Link
+          href="/curriculum"
+          className="flex-1 rounded-lg bg-gradient-to-r from-primary-500 to-primary-600 px-3 py-2 text-center text-xs font-semibold text-white shadow-sm transition hover:shadow-md"
+        >
+          <Play className="mr-1 inline h-3 w-3" />
+          去看微课
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+const SUBJECT_LABELS_R: Record<string, string> = {
+  math: '数学',
+  chinese: '语文',
+  english: '英语',
+  science: '科学',
+};
