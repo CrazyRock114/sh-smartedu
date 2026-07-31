@@ -112,13 +112,21 @@ export default function HomePage() {
 
           <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             {loggedIn ? (
-              <Link
-                href="/dashboard"
-                className="group inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-primary-500/30 transition hover:shadow-xl hover:shadow-primary-500/40"
-              >
-                去看学情
-                <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
-              </Link>
+              <>
+                <Link
+                  href="/dashboard"
+                  className="group inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-primary-500/30 transition hover:shadow-xl hover:shadow-primary-500/40"
+                >
+                  去看学情
+                  <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
+                </Link>
+                <Link
+                  href="/curriculum?grade=3&subject=math&version=%E6%B2%AA%E6%95%99%E7%89%88&semester=2025-spring"
+                  className="rounded-2xl border border-primary-300 bg-primary-50 px-6 py-3.5 text-base font-semibold text-primary-700 transition hover:bg-primary-100"
+                >
+                  本周微课（G3 数学）↗
+                </Link>
+              </>
             ) : (
               <>
                 <Link

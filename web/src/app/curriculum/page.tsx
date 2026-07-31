@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 import { BookOpen, AlertCircle, CheckCircle2, ChevronRight, ExternalLink, Sparkles, Play } from 'lucide-react';
 import { authApi } from '@/lib/auth';
 import { childrenApi } from '@/lib/children';
@@ -218,16 +217,18 @@ export default function CurriculumPage() {
               第 {weekly.week_index} 周
             </span>
           </div>
+          <p className="mb-3 rounded-lg bg-white/70 px-3 py-1.5 text-[11px] text-slate-600">
+            💡 点开会在<strong>新窗口</strong>跳到 basic.sh.smartedu.cn 官方播放器（已替你筛好关键词）
+          </p>
           <ul className="space-y-2">
             {weekly.weekly_videos.slice(0, 5).map((v) => {
               const url = v.direct_url || v.search_url || v.chapter_listing_url;
-              const watchHref = url
-                ? `/watch?url=${encodeURIComponent(url)}&title=${encodeURIComponent(v.episode)}`
-                : '#';
               return (
                 <li key={v.id}>
-                  <Link
-                    href={watchHref}
+                  <a
+                    href={url || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-md"
                   >
                     <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-sm">
@@ -248,7 +249,8 @@ export default function CurriculumPage() {
                         必看
                       </span>
                     )}
-                  </Link>
+                    <ExternalLink className="h-4 w-4 flex-shrink-0 text-slate-400 group-hover:text-primary-600" />
+                  </a>
                 </li>
               );
             })}
@@ -300,27 +302,19 @@ export default function CurriculumPage() {
                       {c.videos.map((v) => {
                         // 优先 direct_url (真实微课页) > chapter_listing_url (整章列表) > search_url
                         const baseUrl = v.direct_url || v.chapter_listing_url || v.search_url;
-                        // kw: 让 /watch 顶部显示搜索关键词提示
-                        const kwMatch = v.search_url?.match(/keyword=([^&]+)/);
-                        const kw = kwMatch
-                          ? decodeURIComponent(kwMatch[1])
-                          : v.episode;
-                        // hint: 章节路径提示
-                        const hint = `3 年级 ${SUBJECT_LABELS[subject] || subject} ${version} ${semesterLabel(semester)}`;
-                        const watchHref = baseUrl
-                          ? `/watch?url=${encodeURIComponent(baseUrl)}&title=${encodeURIComponent(`${c.chapter} · ${v.episode}`)}&kw=${encodeURIComponent(kw)}&hint=${encodeURIComponent(hint)}`
-                          : '#';
                         return (
                           <li key={v.id} className="flex items-center gap-2 text-sm">
                             <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 text-[10px] font-semibold text-primary-700">
                               ▶
                             </span>
-                            <Link
-                              href={watchHref}
+                            <a
+                              href={baseUrl || '#'}
+                              target="_blank"
+                              rel="noopener noreferrer"
                               className="flex-1 truncate text-slate-700 hover:text-primary-700 hover:underline"
                             >
                               {v.episode}
-                            </Link>
+                            </a>
                             {v.importance >= 4 && (
                               <span className="rounded bg-rose-100 px-1.5 py-0.5 text-[10px] font-medium text-rose-700">
                                 必看
@@ -331,6 +325,7 @@ export default function CurriculumPage() {
                                 {v.description}
                               </span>
                             )}
+                            <ExternalLink className="h-3 w-3 flex-shrink-0 text-slate-400" />
                           </li>
                         );
                       })}
