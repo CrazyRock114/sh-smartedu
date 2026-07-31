@@ -35,12 +35,27 @@ export interface CurriculumChangeListItem {
   verified: boolean;
 }
 
+export interface VideoItem {
+  id: string;
+  episode: string;
+  teacher: string | null;
+  school: string | null;
+  duration: string | null;
+  description: string | null;
+  direct_url: string | null;
+  search_url: string | null;
+  chapter_listing_url: string | null;
+  importance: number;
+  week_index: number | null;
+}
+
 export interface ChapterWeekly {
   chapter: string;
   name: string;
   week_index: number;
   knowledge_point_count: number;
   knowledge_point_codes: string[];
+  videos: VideoItem[];
   video_url: string | null;
   note: string | null;
 }
@@ -54,6 +69,7 @@ export interface WeeklyChaptersData {
   chapters: ChapterWeekly[];
   is_new_textbook: boolean;
   change_notice: string | null;
+  weekly_videos: VideoItem[];
 }
 
 export interface ChapterListData {

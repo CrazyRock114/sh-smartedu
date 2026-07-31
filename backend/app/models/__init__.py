@@ -17,6 +17,7 @@ from app.models.knowledge_point import KnowledgePoint
 from app.models.error_item import ErrorItem
 from app.models.mastery_state import MasteryState
 from app.models.curriculum_change import CurriculumChange
+from app.models.weekly_video import WeeklyVideo
 from app.models.study_record import StudyRecord
 from app.models.review_queue import ReviewQueueItem
 from app.models.push_record import PushRecord
@@ -28,6 +29,7 @@ __all__ = [
     "ErrorItem",
     "MasteryState",
     "CurriculumChange",
+    "WeeklyVideo",
     "StudyRecord",
     "ReviewQueueItem",
     "PushRecord",

@@ -49,6 +49,26 @@ class CurriculumChangeListItem(BaseModel):
     verified: bool
 
 
+class VideoItem(BaseModel):
+    """微课条目 (指向 basic.sh.smartedu.cn 公开微课)"""
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    episode: str
+    teacher: Optional[str] = None
+    school: Optional[str] = None
+    duration: Optional[str] = None
+    description: Optional[str] = None
+
+    # 链接: 优先 direct_url (人工核对) > search_url (关键词搜索) > chapter_listing_url (整章)
+    direct_url: Optional[str] = None
+    search_url: Optional[str] = None
+    chapter_listing_url: Optional[str] = None
+
+    importance: int = 3
+    week_index: Optional[int] = None
+
+
 class ChapterWeekly(BaseModel):
     """本周要学的章节"""
     chapter: str
@@ -56,6 +76,9 @@ class ChapterWeekly(BaseModel):
     week_index: int = Field(description="第几周 (1-based)")
     knowledge_point_count: int = 0
     knowledge_point_codes: list[str] = Field(default_factory=list)
+    # 推荐微课 (按 importance 倒序, 取前 5)
+    videos: list[VideoItem] = Field(default_factory=list)
+    # 兼容旧字段: 取第一个 video 的 direct_url 或 search_url
     video_url: Optional[str] = None
     note: Optional[str] = None
 
@@ -70,6 +93,8 @@ class WeeklyChaptersResponse(BaseModel):
     chapters: list[ChapterWeekly]
     is_new_textbook: bool = Field(default=False, description="是否使用新教材")
     change_notice: Optional[str] = None
+    # 整周所有推荐微课 (跨章节)
+    weekly_videos: list[VideoItem] = Field(default_factory=list)
 
 
 class ChapterListResponse(BaseModel):

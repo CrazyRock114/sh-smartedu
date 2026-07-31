@@ -34,7 +34,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<CurrentUser | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const isAuthPage = pathname?.startsWith('/auth');
+  const isAuthPage =
+    pathname?.startsWith('/auth') || pathname?.startsWith('/watch');
 
   useEffect(() => {
     if (isAuthPage) return;

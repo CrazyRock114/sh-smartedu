@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { BookOpen, AlertCircle, CheckCircle2, ChevronRight, ExternalLink, Sparkles } from 'lucide-react';
+import Link from 'next/link';
+import { BookOpen, AlertCircle, CheckCircle2, ChevronRight, ExternalLink, Sparkles, Play } from 'lucide-react';
 import { authApi } from '@/lib/auth';
 import { childrenApi } from '@/lib/children';
 import { curriculumApi, type CurriculumChangeListItem, type WeeklyChaptersData } from '@/lib/curriculum';
@@ -24,6 +25,17 @@ const SEMESTERS = [
   { value: '2026-spring', label: '2026 春' },
   { value: '2026-fall', label: '2026 秋' },
 ];
+
+const SUBJECT_LABELS: Record<string, string> = {
+  math: '数学',
+  chinese: '语文',
+  english: '英语',
+  science: '科学',
+};
+
+function semesterLabel(s: string): string {
+  return SEMESTERS.find((x) => x.value === s)?.label || s;
+}
 
 const CHANGE_TYPE_BADGE: Record<string, { label: string; color: string }> = {
   new: { label: '新增', color: 'bg-emerald-100 text-emerald-700' },
@@ -176,6 +188,59 @@ export default function CurriculumPage() {
         </div>
       )}
 
+      {/* 今日推荐微课 (hero) */}
+      {weekly && weekly.weekly_videos && weekly.weekly_videos.length > 0 && (
+        <section className="mb-6 overflow-hidden rounded-2xl border border-primary-200 bg-gradient-to-br from-primary-50 via-white to-amber-50 p-5 shadow-sm">
+          <div className="mb-3 flex items-center gap-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-sm">
+              <Play className="h-4 w-4" />
+            </div>
+            <div className="flex-1">
+              <h2 className="text-base font-bold text-slate-900">本周推荐微课</h2>
+              <p className="text-xs text-slate-500">点开直接看 · 来源: basic.sh.smartedu.cn 空中课堂</p>
+            </div>
+            <span className="rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-semibold text-primary-700">
+              第 {weekly.week_index} 周
+            </span>
+          </div>
+          <ul className="space-y-2">
+            {weekly.weekly_videos.slice(0, 5).map((v) => {
+              const url = v.direct_url || v.search_url || v.chapter_listing_url;
+              const watchHref = url
+                ? `/watch?url=${encodeURIComponent(url)}&title=${encodeURIComponent(v.episode)}`
+                : '#';
+              return (
+                <li key={v.id}>
+                  <Link
+                    href={watchHref}
+                    className="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-md"
+                  >
+                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-sm">
+                      <Play className="h-4 w-4" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold text-slate-800 group-hover:text-primary-700">
+                        {v.episode}
+                      </p>
+                      {v.description && (
+                        <p className="mt-0.5 line-clamp-1 text-xs text-slate-500">
+                          {v.description}
+                        </p>
+                      )}
+                    </div>
+                    {v.importance >= 4 && (
+                      <span className="flex-shrink-0 rounded bg-rose-100 px-2 py-0.5 text-xs font-semibold text-rose-700">
+                        必看
+                      </span>
+                    )}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
+
       {/* 本周学什么 */}
       {weekly && (
         <section className="mb-6 rounded-2xl border border-slate-200 bg-white p-5">
@@ -194,34 +259,67 @@ export default function CurriculumPage() {
           {weekly.chapters.length === 0 ? (
             <p className="text-sm text-slate-400">该学期暂无章节数据</p>
           ) : (
-            <ul className="space-y-2">
+            <ul className="space-y-3">
               {weekly.chapters.map((c, i) => (
                 <li
                   key={i}
-                  className="flex items-start justify-between rounded-xl border border-slate-100 p-3 transition hover:border-primary-200 hover:bg-primary-50/30"
+                  className="rounded-xl border border-slate-100 p-4 transition hover:border-primary-200"
                 >
-                  <div className="flex-1">
-                    <p className="font-medium text-slate-800">{c.chapter}</p>
-                    <p className="mt-0.5 text-xs text-slate-500">
-                      {c.knowledge_point_count} 个知识点
-                      {c.knowledge_point_codes.length > 0 && (
-                        <span className="ml-1 font-mono text-[10px] text-slate-400">
-                          ({c.knowledge_point_codes.slice(0, 3).join(', ')}
-                          {c.knowledge_point_codes.length > 3 && '...'})
-                        </span>
-                      )}
-                    </p>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <p className="font-semibold text-slate-800">{c.chapter}</p>
+                      <p className="mt-1 text-xs text-slate-500">
+                        {c.knowledge_point_count} 个知识点
+                        {c.knowledge_point_codes.length > 0 && (
+                          <span className="ml-1 font-mono text-[10px] text-slate-400">
+                            ({c.knowledge_point_codes.slice(0, 3).join(', ')}
+                            {c.knowledge_point_codes.length > 3 && '...'})
+                          </span>
+                        )}
+                      </p>
+                    </div>
                   </div>
-                  {c.video_url && (
-                    <a
-                      href={c.video_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 rounded-lg bg-primary-50 px-2 py-1 text-xs text-primary-700 hover:bg-primary-100"
-                    >
-                      <ExternalLink className="h-3 w-3" />
-                      微课
-                    </a>
+                  {/* 微课列表 */}
+                  {c.videos && c.videos.length > 0 && (
+                    <ul className="mt-3 space-y-1.5 border-t border-slate-100 pt-3">
+                      {c.videos.map((v) => {
+                        // 优先 direct_url (真实微课页) > chapter_listing_url (整章列表) > search_url
+                        const baseUrl = v.direct_url || v.chapter_listing_url || v.search_url;
+                        // kw: 让 /watch 顶部显示搜索关键词提示
+                        const kwMatch = v.search_url?.match(/keyword=([^&]+)/);
+                        const kw = kwMatch
+                          ? decodeURIComponent(kwMatch[1])
+                          : v.episode;
+                        // hint: 章节路径提示
+                        const hint = `3 年级 ${SUBJECT_LABELS[subject] || subject} ${version} ${semesterLabel(semester)}`;
+                        const watchHref = baseUrl
+                          ? `/watch?url=${encodeURIComponent(baseUrl)}&title=${encodeURIComponent(`${c.chapter} · ${v.episode}`)}&kw=${encodeURIComponent(kw)}&hint=${encodeURIComponent(hint)}`
+                          : '#';
+                        return (
+                          <li key={v.id} className="flex items-center gap-2 text-sm">
+                            <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary-100 text-[10px] font-semibold text-primary-700">
+                              ▶
+                            </span>
+                            <Link
+                              href={watchHref}
+                              className="flex-1 truncate text-slate-700 hover:text-primary-700 hover:underline"
+                            >
+                              {v.episode}
+                            </Link>
+                            {v.importance >= 4 && (
+                              <span className="rounded bg-rose-100 px-1.5 py-0.5 text-[10px] font-medium text-rose-700">
+                                必看
+                              </span>
+                            )}
+                            {v.description && (
+                              <span className="hidden truncate text-xs text-slate-400 sm:inline">
+                                {v.description}
+                              </span>
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
                   )}
                 </li>
               ))}

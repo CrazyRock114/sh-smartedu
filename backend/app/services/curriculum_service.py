@@ -5,16 +5,18 @@ from datetime import datetime, timezone
 from typing import Optional
 
 from fastapi import HTTPException, status
-from sqlalchemy import and_, select
+from sqlalchemy import and_, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.curriculum_change import CurriculumChange
 from app.models.knowledge_point import KnowledgePoint
+from app.models.weekly_video import WeeklyVideo
 from app.schemas.curriculum import (
     ChapterListResponse,
     ChapterWeekly,
     CurriculumChangeListItem,
     CurriculumChangeResponse,
+    VideoItem,
     WeeklyChaptersResponse,
 )
 
@@ -167,31 +169,56 @@ async def get_weekly_chapters(
     version: str,
     semester: str,
 ) -> WeeklyChaptersResponse:
-    """本周要学的章节 (粗略: 平均分 18 周, 当前周对应的章节范围)"""
-    chapters = await list_chapters(db, grade, subject, version, semester)
+    """本周要学的章节 + 配套微课 (来自 WeeklyVideo 表)
+
+    优先级:
+    1. 若 WeeklyVideo 里有 week_index == current_week 的视频 → 直接用那些 (覆盖 chapter 推算)
+    2. 否则按章节顺序推算 (粗略: 平均分 18 周)
+    """
     week = _current_week_index(semester)
+
+    # Step 1: 拿本周推荐微课 (从 WeeklyVideo 表)
+    weekly_video_stmt = select(WeeklyVideo).where(
+        and_(
+            WeeklyVideo.grade == grade,
+            WeeklyVideo.subject == subject,
+            WeeklyVideo.version == version,
+            WeeklyVideo.semester == semester,
+            WeeklyVideo.week_index == week,
+        )
+    ).order_by(WeeklyVideo.importance.desc())
+    weekly_videos = (await db.execute(weekly_video_stmt)).scalars().all()
+    weekly_video_items = [_to_video_item(v) for v in weekly_videos]
+
+    # Step 2: 章节 (从 knowledge_points 推导)
+    chapters = await list_chapters(db, grade, subject, version, semester)
     if not chapters.chapters:
         return WeeklyChaptersResponse(
             grade=grade, subject=subject, version=version, semester=semester,
-            week_index=week, chapters=[],
+            week_index=week, chapters=[], weekly_videos=weekly_video_items,
         )
-    n = len(chapters.chapters)
-    weeks = 18
-    per_week = max(1, round(n / weeks))
-    start_idx = (week - 1) * per_week
-    end_idx = min(start_idx + per_week, n)
-    # 兜底: 学期末了 (week 过大) 也至少给最后一章
-    if start_idx >= n and n > 0:
-        start_idx = n - 1
-        end_idx = n
-    this_week_chs = chapters.chapters[start_idx:end_idx]
 
-    # 拿这些章节对应的知识点
+    # Step 3: 决定本周章节范围
+    if weekly_video_items:
+        # 用 weekly_video 的 chapter 当锚
+        week_chapters = list(dict.fromkeys(v.chapter for v in weekly_videos))
+    else:
+        # 兜底: 按章节顺序平均分
+        n = len(chapters.chapters)
+        per_week = max(1, round(n / 18))
+        start_idx = (week - 1) * per_week
+        end_idx = min(start_idx + per_week, n)
+        if start_idx >= n and n > 0:
+            start_idx = n - 1
+            end_idx = n
+        week_chapters = chapters.chapters[start_idx:end_idx]
+
+    # Step 4: 拿章节对应的知识点
     kp_stmt = select(KnowledgePoint).where(
         and_(
             KnowledgePoint.grade == grade,
             KnowledgePoint.subject == subject,
-            KnowledgePoint.chapter.in_(this_week_chs),
+            KnowledgePoint.chapter.in_(week_chapters),
         )
     )
     kps = (await db.execute(kp_stmt)).scalars().all()
@@ -199,12 +226,33 @@ async def get_weekly_chapters(
     for kp in kps:
         kp_by_ch.setdefault(kp.chapter, []).append(kp)
 
+    # Step 5: 拿章节对应的微课
+    video_stmt = select(WeeklyVideo).where(
+        and_(
+            WeeklyVideo.grade == grade,
+            WeeklyVideo.subject == subject,
+            WeeklyVideo.version == version,
+            WeeklyVideo.semester == semester,
+            WeeklyVideo.chapter.in_(week_chapters),
+        )
+    ).order_by(WeeklyVideo.importance.desc(), WeeklyVideo.episode)
+    videos_by_ch: dict[str, list[VideoItem]] = {}
+    all_chapter_videos = (await db.execute(video_stmt)).scalars().all()
+    for v in all_chapter_videos:
+        videos_by_ch.setdefault(v.chapter, []).append(_to_video_item(v))
+
+    # Step 6: 组装结果
     chapter_weeks = []
-    for i, ch in enumerate(this_week_chs):
+    for ch in week_chapters:
         kp_list = kp_by_ch.get(ch, [])
-        video_url = next(
-            (kp.video_urls[0] for kp in kp_list if kp.video_urls),
-            None,
+        videos = videos_by_ch.get(ch, [])[:5]  # 每章最多 5 条
+        first_video = videos[0] if videos else None
+        video_url = (
+            first_video.direct_url
+            or first_video.search_url
+            or first_video.chapter_listing_url
+            if first_video
+            else None
         )
         chapter_weeks.append(ChapterWeekly(
             chapter=ch,
@@ -212,6 +260,7 @@ async def get_weekly_chapters(
             week_index=week,
             knowledge_point_count=len(kp_list),
             knowledge_point_codes=[k.code for k in kp_list],
+            videos=videos,
             video_url=video_url,
         ))
 
@@ -230,6 +279,23 @@ async def get_weekly_chapters(
         chapters=chapter_weeks,
         is_new_textbook=is_new,
         change_notice=change_notice,
+        weekly_videos=weekly_video_items,
+    )
+
+
+def _to_video_item(v: WeeklyVideo) -> VideoItem:
+    return VideoItem(
+        id=v.id,
+        episode=v.episode,
+        teacher=v.teacher,
+        school=v.school,
+        duration=v.duration,
+        description=v.description,
+        direct_url=v.direct_url,
+        search_url=v.search_url,
+        chapter_listing_url=v.chapter_listing_url,
+        importance=v.importance,
+        week_index=v.week_index,
     )
 
 
